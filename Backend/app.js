@@ -7,8 +7,8 @@ const cookieParser = require('cookie-parser');
 const connectToDb = require('./db/db');
 
 const userRoutes = require('./routes/user.route');
-const captainRoutes = require('./routes/doctor.route');
-const predictRoute = require('./routes/predict'); // <-- include predict route
+const doctorRoutes = require('./routes/doctor.route'); // ✅ updated from captainRoutes
+const predictRoute = require('./routes/predict');
 
 const app = express();
 
@@ -25,7 +25,7 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/users', userRoutes);
-app.use('/captains', captainRoutes);
-app.use('/api/predict', predictRoute); // <-- mounted predict route
+app.use('/doctors', doctorRoutes); // ✅ changed from '/captains'
+app.use('/api/predict', predictRoute);
 
 module.exports = app;

@@ -6,18 +6,61 @@ import os
 from flask_cors import CORS
 
 app = Flask(__name__)
-CORS(app)  # Allow cross-origin requests from your frontend (React)
+CORS(app)   
 
-# ==== Load ML artifacts ====
+
 model = joblib.load("models/rf_structured.pkl")
 symptom_list = joblib.load("models/all_symptoms.pkl")
 class_names = joblib.load("models/class_names.pkl")
 
-# Load additional CSVs for description and precautions
 desc_df = pd.read_csv("data/symptom_Description.csv")
 prec_df = pd.read_csv("data/symptom_precaution.csv")
 
-# ==== Helper Functions ====
+doctor_mapping = {
+    "gerd": [
+        {"name": "Dr. Anjali Mehta", "specialty": "Gastroenterologist", "location": "Mumbai"},
+        {"name": "Dr. Rajesh Iyer", "specialty": "Gastroenterologist", "location": "Delhi"},
+    ],
+    "bronchial asthma": [
+        {"name": "Dr. Ritu Kapoor", "specialty": "Pulmonologist", "location": "Bangalore"},
+        {"name": "Dr. Ashok Nair", "specialty": "Allergy & Immunology", "location": "Chennai"},
+    ],
+    "urinary tract infection": [
+        {"name": "Dr. Swati Verma", "specialty": "Urologist", "location": "Pune"},
+        {"name": "Dr. Vikram Joshi", "specialty": "General Physician", "location": "Ahmedabad"},
+    ],
+    "diabetes": [
+        {"name": "Dr. Neha Desai", "specialty": "Endocrinologist", "location": "Mumbai"},
+        {"name": "Dr. Amit Sharma", "specialty": "Diabetologist", "location": "Hyderabad"},
+    ],
+    "migraine": [
+        {"name": "Dr. Sneha Rao", "specialty": "Neurologist", "location": "Kolkata"},
+        {"name": "Dr. Kunal Mehra", "specialty": "Pain Specialist", "location": "Delhi"},
+    ],
+    "tuberculosis": [
+        {"name": "Dr. Arvind Patil", "specialty": "Pulmonologist", "location": "Mumbai"},
+        {"name": "Dr. Seema Gupta", "specialty": "Infectious Disease Specialist", "location": "Jaipur"},
+    ],
+    "hepatitis b": [
+        {"name": "Dr. Priya Nanda", "specialty": "Hepatologist", "location": "Chandigarh"},
+        {"name": "Dr. Faisal Qureshi", "specialty": "Gastroenterologist", "location": "Delhi"},
+    ],
+    "osteoarthristis": [
+        {"name": "Dr. Rohit Malhotra", "specialty": "Orthopedic Surgeon", "location": "Lucknow"},
+        {"name": "Dr. Asha Menon", "specialty": "Rheumatologist", "location": "Bhopal"},
+    ],
+    "common cold": [
+        {"name": "Dr. Ravi Sheth", "specialty": "General Physician", "location": "Nagpur"},
+        {"name": "Dr. Meena Kumar", "specialty": "ENT Specialist", "location": "Surat"},
+    ],
+    "acne": [
+        {"name": "Dr. Pooja Sethi", "specialty": "Dermatologist", "location": "Indore"},
+        {"name": "Dr. Manish Vyas", "specialty": "Skin Specialist", "location": "Patna"},
+    ],
+}
+
+
+
 def extract_symptoms_from_text(text):
     """Extract known symptoms from user text using keyword matching"""
     text = text.lower()
@@ -40,15 +83,15 @@ def predict_disease(symptoms):
     return [{"disease": name, "confidence": round(prob, 4)} for name, prob in top_3]
 
 def get_disease_info(disease_name):
-    """Fetch description and precautions for a disease"""
-    info = {"description": "", "precautions": []}
+    """Fetch description, precautions, and suggested doctors for a disease"""
+    info = {"description": "", "precautions": [], "doctors": []}
 
-    # Description
+    
     desc_row = desc_df[desc_df["Disease"].str.lower() == disease_name.lower()]
     if not desc_row.empty:
         info["description"] = desc_row.iloc[0]["Description"]
 
-    # Precautions
+    
     prec_row = prec_df[prec_df["Disease"].str.lower() == disease_name.lower()]
     if not prec_row.empty:
         for i in range(1, 5):
@@ -56,9 +99,10 @@ def get_disease_info(disease_name):
             if pd.notna(val):
                 info["precautions"].append(val)
 
+    info["doctors"] = doctor_mapping.get(disease_name.lower(), [])
+
     return info
 
-# ==== API Routes ====
 
 @app.route("/predict", methods=["POST"])
 def predict():
@@ -66,7 +110,6 @@ def predict():
     input_text = data.get("text", "")
     symptoms_from_dropdown = data.get("symptoms", [])
 
-    # Use dropdown if available; otherwise, extract from text
     if symptoms_from_dropdown:
         selected = symptoms_from_dropdown
     elif input_text.strip():
@@ -96,6 +139,5 @@ def get_symptoms():
     formatted = [s.replace("_", " ").title() for s in symptom_list]
     return jsonify({"symptoms": formatted})
 
-# ==== Main Entrypoint ====
 if __name__ == "__main__":
     app.run(debug=True, port=5000)

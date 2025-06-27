@@ -6,7 +6,7 @@ const CaptainLogout = () => {
     const token = localStorage.getItem('token')
     const navigate = useNavigate()
 
-    axios.get(`${import.meta.env.VITE_API_URL}/captains/logout`, {
+    axios.get(`${import.meta.env.VITE_API_URL}/doctor/logout`, {
         headers:{
             Authorization: `Bearer ${token}`
         }
@@ -14,7 +14,7 @@ const CaptainLogout = () => {
         if (response.status === 200) {
             console.log('Logout successful')
             localStorage.removeItem('token')
-            navigate('/captain-login')
+            navigate('/doctor-login')
         }
     })
 

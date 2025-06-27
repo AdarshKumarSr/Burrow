@@ -9,6 +9,7 @@ import DoctorLogin from './pages/Doctorlogin';
 import DoctorSignup from './pages/DoctorSignup';
 import UserProtectedWrapper from './pages/UserProtecedWrapper';
 import DoctorHome from './pages/DoctorHome';
+import Chatbot from './pages/Chatbot';
 import DoctorProtectedWrapper from './pages/DoctorProtectWrapper';
 import HealthChatbot from './components/HealthChatBot'; // ✅ Make sure path is correct
 
@@ -44,6 +45,13 @@ const App = () => {
           </DoctorProtectedWrapper>
         } />
         
+        <Route path='/chatbot' element={
+          <UserProtectedWrapper>
+            <Chatbot />
+          </UserProtectedWrapper>
+        } />
+
+
         <Route path='/doctor/logout' element={
           <DoctorProtectedWrapper>
             <UserLogout />

@@ -1,33 +1,31 @@
-import React, { createContext , useState, useContext} from 'react'
-export const CaptainDataContext = createContext()
-const CaptainContext = ({children}) => {
-    const [captain, setCaptain] = useState(null);
-    const [isLoading, setIsLoading] = useState(false);
-    const [error, setError] = useState(null);
+import React, { createContext, useState } from 'react';
 
-    const updateCaptain = (captainData) => {
-        setCaptain(captainData);
-    }
+export const DoctorDataContext = createContext();
 
-    const value = {
-        captain,
-        setCaptain,
-        isLoading,
-        setIsLoading,
-        error,
-        setError,
-        updateCaptain
-    };
+const DoctorContext = ({ children }) => {
+  const [doctor, setDoctor] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
- 
+  const updateDoctor = (doctorData) => {
+    setDoctor(doctorData);
+  };
+
+  const value = {
+    doctor,
+    setDoctor,
+    isLoading,
+    setIsLoading,
+    error,
+    setError,
+    updateDoctor,
+  };
+
   return (
-    <div>
-      <CaptainDataContext.Provider value={value}>
-                {children}
-        </CaptainDataContext.Provider>
-              
-    </div>
-  )
-}
+    <DoctorDataContext.Provider value={value}>
+      {children}
+    </DoctorDataContext.Provider>
+  );
+};
 
-export default CaptainContext
+export default DoctorContext;
