@@ -1,26 +1,21 @@
 import React, { useState } from 'react';
-import logo from '../assets/burrowlogo.png';
 import { Link, useNavigate } from 'react-router-dom';
-import { DoctorDataContext } from '../context/DoctorContext'; // ✅ updated context name
 import axios from 'axios';
+import { DoctorDataContext } from '../context/DoctorContext';
 
 const DoctorLogin = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-
-  const { doctor, setDoctor } = React.useContext(DoctorDataContext); // ✅ context values updated
+  const { setDoctor } = React.useContext(DoctorDataContext);
   const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const credentials = {
-      email,
-      password
-    };
+    const credentials = { email, password };
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/doctors/login`, credentials); // ✅ corrected route
+      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/doctors/login`, credentials);
       if (response.status === 200) {
         const data = response.data;
         setDoctor(data.doctor);
@@ -37,48 +32,55 @@ const DoctorLogin = () => {
   };
 
   return (
-    <div className='p-7 h-screen flex flex-col justify-between'>
-      <div>
-        <img className='w-15 mb-14' src={logo} alt="Burrow Logo" />
-        <form onSubmit={submitHandler}>
-          <h3 className='font-bold text-lg mb-2'>What's your Email</h3>
+    <div className="min-h-screen bg-[#f4f8fc] pt-24 flex flex-col items-center px-4">
+      <h2 className="text-3xl font-bold text-center mb-8 border-b-2 border-gray-400 pb-2 w-fit">
+        Doctor Login
+      </h2>
+
+      <form
+        onSubmit={submitHandler}
+        className="bg-white rounded-xl shadow-md px-10 py-8 w-full max-w-2xl"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <input
             required
+            type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className='bg-[#eee] mb-7 rounded px-4 py-2 w-full text-lg placeholder:text-base'
-            type='email'
-            placeholder='email@example.com'
+            placeholder="EMAIL"
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
           />
-
-          <h3 className='font-bold text-lg mb-2'>Enter Password</h3>
           <input
             required
+            type="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className='bg-[#eee] mb-7 rounded px-4 py-2 w-full text-lg placeholder:text-base'
-            type='password'
-            placeholder='password'
+            placeholder="PASSWORD"
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
           />
+        </div>
 
-          <button className='bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 border w-full text-lg'>
-            Login
-          </button>
-
-          <p className='text-center'>
-            Not a member? 
-            <Link to='/doctor-signup' className='text-blue-600'> Register as a Doctor</Link>
-          </p>
-        </form>
-      </div>
-      <div>
-        <Link
-          to='/login'
-          className='bg-[#d5622d] flex items-center justify-center text-white font-semibold mb-5 rounded px-4 py-2 border w-full text-lg'
+        <button
+          type="submit"
+          className="w-full bg-gray-300 hover:bg-gray-400 text-black font-semibold py-2 rounded-md transition mb-4"
         >
-          Sign In As User
-        </Link>
-      </div>
+          LOGIN
+        </button>
+
+        <p className="text-center text-sm text-gray-600 mb-4">
+          Not a member?{' '}
+          <Link to="/doctor-signup" className="text-blue-600 hover:underline font-medium">
+            Register as a Doctor
+          </Link>
+        </p>
+      </form>
+
+      <Link
+        to="/login"
+        className="mt-6 bg-[#d5622d] text-white font-semibold py-2 px-6 rounded-lg hover:bg-[#bb4f1a] transition"
+      >
+        Sign In as User
+      </Link>
     </div>
   );
 };

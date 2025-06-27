@@ -1,5 +1,4 @@
 import React, { useState, useContext } from 'react';
-import logo from '../assets/burrowlogo.png';
 import { Link, useNavigate } from 'react-router-dom';
 import { DoctorDataContext } from '../context/DoctorContext';
 import axios from 'axios';
@@ -11,7 +10,6 @@ const DoctorSignup = () => {
   const [password, setPassword] = useState('');
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
-
   const [specialityField, setSpecialityField] = useState('');
   const [experience, setExperience] = useState('');
   const [licenseId, setLicenseId] = useState('');
@@ -60,94 +58,108 @@ const DoctorSignup = () => {
   };
 
   return (
-    <div className='p-7 h-screen flex flex-col justify-between'>
-      <div>
-        <img className='w-15 mb-14' src={logo} alt="Burrow Logo" />
-        <form onSubmit={submitHandler}>
-          <h3 className='font-bold text-base mb-2'>What's your Name</h3>
-          <div className='flex gap-4 mb-6'>
-            <input
-              required
-              className='bg-[#eee] rounded px-4 py-2 w-1/2 text-base placeholder:text-sm'
-              type='text'
-              placeholder='First Name'
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            <input
-              className='bg-[#eee] rounded px-4 py-2 w-1/2 text-base placeholder:text-sm'
-              type='text'
-              placeholder='Last Name'
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
+    <div className="min-h-screen bg-[#f4f8fc] pt-24 flex flex-col items-center px-4">
+      <h2 className="text-3xl font-bold text-center mb-8 border-b-2 border-gray-400 pb-2 w-fit">
+        Doctor Sign-up
+      </h2>
 
-          <h3 className='font-bold text-base mb-2'>Speciality Information</h3>
-          <div className="flex gap-4 mb-6">
-            <input
-              required
-              className="bg-[#eee] rounded px-4 py-2 w-1/2 text-base placeholder:text-sm"
-              type="text"
-              placeholder="Speciality Field"
-              value={specialityField}
-              onChange={(e) => setSpecialityField(e.target.value)}
-            />
-            <input
-              required
-              className="bg-[#eee] rounded px-4 py-2 w-1/2 text-base placeholder:text-sm"
-              type="number"
-              placeholder="Experience (Years)"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-            />
-          </div>
-
+      <form
+        onSubmit={submitHandler}
+        className="bg-white rounded-xl shadow-md px-10 py-8 w-full max-w-2xl"
+      >
+        {/* Name */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
           <input
             required
-            className="bg-[#eee] mb-6 rounded px-4 py-2 w-full text-base placeholder:text-sm"
+            type="text"
+            placeholder="First Name"
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+          />
+          <input
+            type="text"
+            placeholder="Last Name"
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+          />
+        </div>
+
+        {/* Speciality & Experience */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <input
+            required
+            type="text"
+            placeholder="Speciality Field"
+            value={specialityField}
+            onChange={(e) => setSpecialityField(e.target.value)}
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+          />
+          <input
+            required
+            type="number"
+            placeholder="Experience (Years)"
+            value={experience}
+            onChange={(e) => setExperience(e.target.value)}
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+          />
+        </div>
+
+        {/* License */}
+        <div className="mb-6">
+          <input
+            required
             type="text"
             placeholder="License ID"
             value={licenseId}
             onChange={(e) => setLicenseId(e.target.value)}
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
           />
+        </div>
 
-          <h3 className='font-bold text-base mb-2'>What's your Email</h3>
+        {/* Email */}
+        <div className="mb-6">
           <input
             required
-            className='bg-[#eee] mb-5 rounded px-4 py-2 w-full text-base placeholder:text-sm'
-            type='email'
-            placeholder='email@example.com'
+            type="email"
+            placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
           />
+        </div>
 
-          <h3 className='font-bold text-base mb-2'>Enter Password</h3>
+        {/* Password */}
+        <div className="mb-6">
           <input
             required
-            className='bg-[#eee] mb-5 rounded px-4 py-2 w-full text-base placeholder:text-sm'
-            type='password'
-            placeholder='Password'
+            type="password"
+            placeholder="Password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
           />
+        </div>
 
-          <button className='bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 border w-full text-lg'>
-            Sign Up
-          </button>
+        <button
+          type="submit"
+          className="w-full bg-gray-300 hover:bg-gray-400 text-black font-semibold py-2 rounded-md transition mb-4"
+        >
+          SIGN UP
+        </button>
 
-          <p className='text-center text-sm'>
-            Already have an account?
-            <Link to='/doctor-login' className='text-blue-600'> Login here</Link>
-          </p>
-        </form>
-      </div>
-
-      <div>
-        <p className='text-[10px] leading-tight'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis re eveniet necessitatibus!
+        <p className="text-center text-sm text-gray-600 mb-4">
+          Already have an account?{' '}
+          <Link to="/doctor-login" className="text-blue-600 hover:underline font-medium">
+            Login here
+          </Link>
         </p>
-      </div>
+      </form>
+
+      <p className="text-xs text-gray-400 mt-6 text-center max-w-xl">
+        By signing up, you confirm you are a certified professional. Ensure that the information provided is accurate to maintain the credibility of the platform.
+      </p>
     </div>
   );
 };
