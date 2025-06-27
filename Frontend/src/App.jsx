@@ -11,10 +11,13 @@ import UserProtectedWrapper from './pages/UserProtecedWrapper';
 import DoctorHome from './pages/DoctorHome';
 import DoctorProtectedWrapper from './pages/DoctorProtectWrapper';
 import HealthChatbot from './components/HealthChatBot'; // ✅ Make sure path is correct
+import Navbar from './components/Navbar';
+import Chat from './pages/Chat';
 
 const App = () => {
   return (
     <div className="App">
+      <Navbar />
       {/* <h1>🩺 Smart Symptom Predictor</h1>
       <HealthChatbot /> */}
 
@@ -49,6 +52,9 @@ const App = () => {
             <UserLogout />
           </DoctorProtectedWrapper>
         } />
+
+        <Route path='/chat' element={<Chat />} />
+        <Route path='/dashboard' element={<div className='p-8'>Dashboard coming soon...</div>} />
       </Routes>
     </div>
   );
