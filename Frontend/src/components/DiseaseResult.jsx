@@ -4,7 +4,7 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
   const [response, setResponse] = useState(null);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(true);
-  const [expandedDoctor, setExpandedDoctor] = useState(null); // NEW
+  const [expandedDoctor, setExpandedDoctor] = useState(null);
   const fetchedRef = useRef(false);
 
   const userInput = steps?.symptomInput?.value;
@@ -28,6 +28,13 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
 
         if (data?.results?.length > 0) {
           setResponse(data);
+
+          if (data.top_disease_info?.missing_data) {
+            setTimeout(() => {
+              triggerNextStep({ trigger: "symptomInput" });
+            }, 4000);
+          }
+
         } else {
           setError("❌ No predictions found.");
         }
@@ -40,7 +47,7 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
     };
 
     fetchPrediction();
-  }, [userInput]);
+  }, [userInput, triggerNextStep]);
 
   if (loading) return <div>🧠 Analyzing your symptoms...</div>;
   if (error) return <div style={styles.error}>{error}</div>;
@@ -48,13 +55,18 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
   const { results = [], symptoms = [], top_disease_info = {} } = response || {};
   const doctors = top_disease_info.doctors || [];
 
+  const handleBookAppointment = () => {
+    localStorage.setItem("selectedDoctors", JSON.stringify(doctors));
+    window.location.href = "/bookappointment"; // or use navigate() if using react-router-dom
+  };
+
   return (
     <div style={styles.wrapper}>
       <div style={styles.container}>
         <h3>🧠 Predicted Diseases</h3>
         {results.map((res, i) => (
           <p key={i}>
-            {i + 1}. <strong>{res.disease}</strong> – {Math.round(res.confidence * 100)}%
+            {i + 1}. <strong>{res.disease.toLowerCase()}</strong> – {Math.round(res.confidence * 100)}%
           </p>
         ))}
 
@@ -65,48 +77,67 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
           </>
         )}
 
-        {top_disease_info.description && (
+        {top_disease_info.missing_data ? (
+          <div style={styles.error}>
+            ⚠️ I couldn't find detailed info for this condition. Could you describe your symptoms in a bit more detail?
+          </div>
+        ) : (
           <>
-            <h4>📖 Description</h4>
-            <p>{top_disease_info.description}</p>
-          </>
-        )}
+            {top_disease_info.description && (
+              <>
+                <h4>📖 Description</h4>
+                <p>{top_disease_info.description}</p>
+              </>
+            )}
 
-        {top_disease_info.precautions?.length > 0 && (
-          <>
-            <h4>🛡️ Precautions</h4>
-            <ul>
-              {top_disease_info.precautions.map((item, i) => (
-                <li key={i}>{item}</li>
-              ))}
-            </ul>
-          </>
-        )}
+            {top_disease_info.precautions?.length > 0 && (
+              <>
+                <h4>🛡️ Precautions</h4>
+                <ul>
+                  {top_disease_info.precautions.map((item, i) => (
+                    <li key={i}>{item}</li>
+                  ))}
+                </ul>
+              </>
+            )}
 
-        {doctors.length > 0 && (
-          <>
-            <h4>👨‍⚕️ Suggested Doctors</h4>
-            <ul style={styles.doctorList}>
-              {doctors.map((doc, i) => (
-                <li key={i} style={styles.doctorItem}>
-                  <span>{doc.name}</span>
-                  <button
-                    style={styles.button}
-                    onClick={() =>
-                      setExpandedDoctor(expandedDoctor === i ? null : i)
-                    }
-                  >
-                    {expandedDoctor === i ? "Hide Details" : "View Details"}
-                  </button>
-                  {expandedDoctor === i && (
-                    <div style={styles.doctorDetails}>
-                      <p><strong>Specialty:</strong> {doc.specialty}</p>
-                      <p><strong>Location:</strong> {doc.location}</p>
-                    </div>
-                  )}
-                </li>
-              ))}
-            </ul>
+            {doctors.length > 0 && (
+              <>
+                <h4>👨‍⚕️ Suggested Doctors</h4>
+                <ul style={styles.doctorList}>
+                  {doctors.map((doc, i) => (
+                    <li key={i} style={styles.doctorItem}>
+                      <span>{doc.name}</span>
+                      <button
+                        style={styles.button}
+                        onClick={() =>
+                          setExpandedDoctor(expandedDoctor === i ? null : i)
+                        }
+                      >
+                        {expandedDoctor === i ? "Hide Details" : "View Details"}
+                      </button>
+                      {expandedDoctor === i && (
+                        <div style={styles.doctorDetails}>
+                          <p><strong>Specialty:</strong> {doc.specialty}</p>
+                          <p><strong>Location:</strong> {doc.location}</p>
+                        </div>
+                      )}
+                    </li>
+                  ))}
+                </ul>
+
+                <button
+                  style={{ ...styles.button, marginTop: "10px" }}
+                  onClick={() => {
+                    localStorage.setItem("selectedDoctors", JSON.stringify(doctors));
+                    window.location.href = "/bookappointment"; 
+                  }}
+                >
+                  📅 Book Appointment
+                </button>
+
+              </>
+            )}
           </>
         )}
       </div>

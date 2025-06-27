@@ -14,6 +14,7 @@ import DoctorProtectedWrapper from './pages/DoctorProtectWrapper';
 import HealthChatbot from './components/HealthChatBot'; // ✅ Make sure path is correct
 import Navbar from './components/Navbar';
 import Chat from './pages/Chat';
+import BookAppointment from './pages/BookAppointment';
 
 const App = () => {
   return (
@@ -63,6 +64,7 @@ const App = () => {
 
         <Route path='/chat' element={<Chat />} />
         <Route path='/dashboard' element={<div className='p-8'>Dashboard coming soon...</div>} />
+        <Route path='/bookappointment' element={<BookAppointment />} />
       </Routes>
     </div>
   );
