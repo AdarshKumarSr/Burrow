@@ -25,11 +25,10 @@ const doctorSchema = new mongoose.Schema({
         type: String,
         required: true,
         minlength: [6, 'Password must be at least 8 characters long'],
-        select: false   // Hide password from select queries
+        select: false   
     },
     soketid: {
         type: String,
-        // optional
     },
     status: {
         type: String,
@@ -58,27 +57,25 @@ const doctorSchema = new mongoose.Schema({
     location: {
         lat: {
             type: Number,
-            // optional
+            
         },
         lng: {
             type: Number,
-            // optional
         }
     }
 });
 
-// Auth token generation
+
 doctorSchema.methods.generateAuthToken = function() {
     const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
     return token;
 }
 
-// Password comparison
 doctorSchema.methods.comparePassword = async function(password) {
     return await bcrypt.compare(password, this.password);
 }
 
-// Password hashing
+
 doctorSchema.statics.hashPassword = async function(password) {
     return await bcrypt.hash(password, 10);
 }

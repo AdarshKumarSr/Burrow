@@ -83,15 +83,15 @@ const Home = () => {
 
           {/* Card 3 */}
           <Link
-            to="/chatbot"
+            to="/buy-medicine"
             className="bg-white border rounded-xl shadow-sm p-8 transition hover:shadow-lg hover:-translate-y-1 transform duration-300"
           >
             <div className="flex justify-center mb-5">
               <div className="w-10 h-10 bg-purple-500 rounded-full"></div>
             </div>
-            <h3 className="text-xl font-semibold mb-3">Book Appointments</h3>
+            <h3 className="text-xl font-semibold mb-3">Buy Medicine</h3>
             <p className="text-gray-600 text-sm leading-relaxed">
-              Schedule appointments effortlessly. Real-time availability, instant confirmations, and automatic reminders to keep you on track.
+              Order medicines easily. Get real-time availability, instant purchase confirmations, and timely delivery reminders to stay on top of your health.
             </p>
           </Link>
         </div>
