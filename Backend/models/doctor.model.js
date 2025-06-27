@@ -1,153 +1,88 @@
-import React, { useState, useContext } from 'react';
-import logo from '../assets/burrowlogo.png';
-import { Link, useNavigate } from 'react-router-dom';
-import { DoctorDataContext } from '../context/DoctorContext';
-import axios from 'axios';
+const mongoose = require('mongoose');
+const bcrypt = require('bcrypt');
+const jwt = require('jsonwebtoken');
 
-const DoctorSignup = () => {
-  const navigate = useNavigate();
+const doctorSchema = new mongoose.Schema({
+    fullname: {
+        firstname: {
+            type: String,
+            required: true,
+            minlength: [3, 'Name must be at least 3 characters long']
+        },
+        lastname: {
+            type: String,
+            minlength: [3, 'Lastname must be at least 3 characters long']
+        }
+    },
+    email: {
+        type: String,
+        required: true,
+        unique: true,
+        lowercase: true,
+        match: [/^([\w-\.]+@([\w-]+\.)+[\w-]{2,4})?$/, 'Please fill a valid email address']
+    },
+    password: {
+        type: String,
+        required: true,
+        minlength: [6, 'Password must be at least 8 characters long'],
+        select: false   // Hide password from select queries
+    },
+    soketid: {
+        type: String,
+        // optional
+    },
+    status: {
+        type: String,
+        enum: ['online', 'offline'],
+        default: 'offline'
+    },
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [firstName, setFirstName] = useState('');
-  const [lastName, setLastName] = useState('');
+    speciality: {
+        field: {
+            type: String,
+            required: true,
+            minlength: [3, 'Speciality field must be at least 3 characters long']
+        },
+        experience: {
+            type: Number,
+            required: true,
+            min: [0, 'Experience must be a non-negative number']
+        },
+        licenseId: {
+            type: String,
+            required: true,
+            minlength: [3, 'License ID must be at least 3 characters long']
+        }
+    },
 
-  const [specialityField, setSpecialityField] = useState('');
-  const [experience, setExperience] = useState('');
-  const [licenseId, setLicenseId] = useState('');
-
-  const { setDoctor } = useContext(DoctorDataContext);
-
-  const submitHandler = async (e) => {
-    e.preventDefault();
-
-    const doctorData = {
-      fullname: {
-        firstname: firstName,
-        lastname: lastName,
-      },
-      email,
-      password,
-      speciality: {
-        field: specialityField,
-        experience: Number(experience),
-        licenseId,
-      },
-    };
-
-    try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/doctors/register`, doctorData);
-
-      if (response.status === 201) {
-        const data = response.data;
-        setDoctor(data.doctor);
-        localStorage.setItem('token', data.token);
-        navigate('/doctor-home');
-      }
-    } catch (err) {
-      console.error('Signup failed:', err);
-      alert('Signup failed. Please check your input or try again later.');
+    location: {
+        lat: {
+            type: Number,
+            // optional
+        },
+        lng: {
+            type: Number,
+            // optional
+        }
     }
+});
 
-    // Reset form
-    setEmail('');
-    setPassword('');
-    setFirstName('');
-    setLastName('');
-    setSpecialityField('');
-    setExperience('');
-    setLicenseId('');
-  };
+// Auth token generation
+doctorSchema.methods.generateAuthToken = function() {
+    const token = jwt.sign({ _id: this._id }, process.env.JWT_SECRET, { expiresIn: '24h' });
+    return token;
+}
 
-  return (
-    <div className="p-7 h-screen flex flex-col justify-between">
-      <div>
-        <img className="w-15 mb-14" src={logo} alt="Burrow Logo" />
-        <form onSubmit={submitHandler}>
-          <h3 className="font-bold text-base mb-2">What's your Name</h3>
-          <div className="flex gap-4 mb-6">
-            <input
-              required
-              className="bg-[#eee] rounded px-4 py-2 w-1/2 text-base placeholder:text-sm"
-              type="text"
-              placeholder="First Name"
-              value={firstName}
-              onChange={(e) => setFirstName(e.target.value)}
-            />
-            <input
-              className="bg-[#eee] rounded px-4 py-2 w-1/2 text-base placeholder:text-sm"
-              type="text"
-              placeholder="Last Name"
-              value={lastName}
-              onChange={(e) => setLastName(e.target.value)}
-            />
-          </div>
+// Password comparison
+doctorSchema.methods.comparePassword = async function(password) {
+    return await bcrypt.compare(password, this.password);
+}
 
-          <h3 className="font-bold text-base mb-2">Speciality Details</h3>
-          <div className="flex gap-4 mb-6">
-            <input
-              required
-              className="bg-[#eee] rounded px-4 py-2 w-1/2 text-base placeholder:text-sm"
-              type="text"
-              placeholder="Speciality Field"
-              value={specialityField}
-              onChange={(e) => setSpecialityField(e.target.value)}
-            />
-            <input
-              required
-              className="bg-[#eee] rounded px-4 py-2 w-1/2 text-base placeholder:text-sm"
-              type="number"
-              placeholder="Experience (Years)"
-              value={experience}
-              onChange={(e) => setExperience(e.target.value)}
-            />
-          </div>
-          <input
-            required
-            className="bg-[#eee] mb-6 rounded px-4 py-2 w-full text-base placeholder:text-sm"
-            type="text"
-            placeholder="License ID"
-            value={licenseId}
-            onChange={(e) => setLicenseId(e.target.value)}
-          />
+// Password hashing
+doctorSchema.statics.hashPassword = async function(password) {
+    return await bcrypt.hash(password, 10);
+}
 
-          <h3 className="font-bold text-base mb-2">What's your Email</h3>
-          <input
-            required
-            className="bg-[#eee] mb-5 rounded px-4 py-2 w-full text-base placeholder:text-sm"
-            type="email"
-            placeholder="email@example.com"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-          />
+const doctorModel = mongoose.model('doctor', doctorSchema);
 
-          <h3 className="font-bold text-base mb-2">Enter Password</h3>
-          <input
-            required
-            className="bg-[#eee] mb-5 rounded px-4 py-2 w-full text-base placeholder:text-sm"
-            type="password"
-            placeholder="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-          />
-
-          <button className="bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 border w-full text-lg">
-            Sign Up
-          </button>
-
-          <p className="text-center text-sm">
-            Already have an account?
-            <Link to="/doctor-login" className="text-blue-600"> Login here</Link>
-          </p>
-        </form>
-      </div>
-      <div>
-        <p className="text-[10px] leading-tight">
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Debitis re eveniet necessitatibus!
-        </p>
-      </div>
-    </div>
-  );
-};
-
-export default DoctorSignup;
+module.exports = doctorModel;
