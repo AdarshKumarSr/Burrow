@@ -66,7 +66,7 @@ const UserLogin = () => {
 
       <button className='bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 border w-full text-lg placeholder:text-base' >Login</button>
 
-     <p className='text-center' >New here then mf!!?  
+     <p className='text-center' >New here!!?  
       <Link to='/Signup' className='text-blue-600'> Create New Account</Link> </p>
 
       </form>
@@ -75,7 +75,7 @@ const UserLogin = () => {
         <Link 
         to='/doctor-login'
            className='bg-[#10b461] flex items-center justify-center text-white font-semibold mb-5 rounded px-4 py-2 border w-full text-lg placeholder:text-base'
-        > SignIn As Captain</Link>
+        > SignIn As Doctor</Link>
       </div>
     </div>
   )
