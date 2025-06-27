@@ -39,7 +39,7 @@ const UserLogin = () => {
   return (
     <div className='p-7 h-screen flex flex-col justify-between'>
       <div>
-      <img className='w-15 mb-14'  src={logo} alt="Uber Logo" />
+      
       <form onSubmit={(e)=>{
         submitHandler(e)
       }} >

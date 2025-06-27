@@ -1,18 +1,39 @@
-import React from 'react'
-import logo from '../assets/burrowlogo.png';
-import bguber from '../assets/bg1.jpg';
-import { Link } from 'react-router-dom';
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const Start = () => {
+  const navigate = useNavigate();
   return (
-    <div
-      className='h-screen pt-8 flex justify-between flex-col w-full bg-cover bg-center'
-      style={{ backgroundImage: `url(${bguber})` }} // ✅ Correct way to set background
-    >
-      <img className='w-18 ml-8'  src={logo} alt="Uber Logo" />
-      <div className='bg-white pb-7 py-4 px-4'>
-        <h2 className='text-3xl font-bold'>Get Started with Uber</h2>
-        <Link to='login' className='flex items-center justify-center w-full bg-black text-white py-3 rounded mt-7'>Continue</Link>
+    <div className="min-h-screen flex flex-col items-center justify-center bg-[#f7fafd]">
+      <div className="text-center mb-8">
+        <h2 className="text-2xl font-bold mb-2">Welcome to the Burrow Portal</h2>
+        <p className="text-gray-500">To access the portal, you need to choose a type of access.</p>
+      </div>
+      <div className="flex gap-10">
+        <button
+          onClick={() => navigate('/doctor-login')}
+          className="bg-white rounded-xl shadow p-6 flex flex-col items-center hover:shadow-lg transition border border-gray-200"
+        >
+          {/* Doctor Icon SVG */}
+          <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="64" height="64" rx="16" fill="#E3F2FD"/>
+            <ellipse cx="32" cy="28" rx="12" ry="12" fill="#B0BEC5"/>
+            <rect x="20" y="40" width="24" height="12" rx="6" fill="#90CAF9"/>
+            <rect x="28" y="44" width="8" height="8" rx="4" fill="#fff"/>
+          </svg>
+        </button>
+        <button
+          onClick={() => navigate('/login')}
+          className="bg-white rounded-xl shadow p-6 flex flex-col items-center hover:shadow-lg transition border border-gray-200"
+        >
+          {/* User Icon SVG */}
+          <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="64" height="64" rx="16" fill="#E3F2FD"/>
+            <ellipse cx="32" cy="28" rx="12" ry="12" fill="#90CAF9"/>
+            <rect x="20" y="40" width="24" height="12" rx="6" fill="#B0BEC5"/>
+            <rect x="28" y="44" width="8" height="8" rx="4" fill="#fff"/>
+          </svg>
+        </button>
       </div>
     </div>
   );
