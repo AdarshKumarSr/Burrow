@@ -1,0 +1,57 @@
+import React from 'react';
+import { Route, Routes } from 'react-router-dom';
+import Start from './pages/Start';
+import Home from './pages/Home';
+import UserLogin from './pages/UserLogin';
+import UserSignup from './pages/UserSignup';
+import UserLogout from './pages/UserLogout';
+import DoctorLogin from './pages/Doctorlogin';
+import DoctorSignup from './pages/DoctorSignup';
+import UserProtectedWrapper from './pages/UserProtecedWrapper';
+import DoctorHome from './pages/DoctorHome';
+import DoctorProtectedWrapper from './pages/DoctorProtectWrapper';
+import HealthChatbot from './components/HealthChatBot'; // ✅ Make sure path is correct
+
+const App = () => {
+  return (
+    <div className="App">
+      {/* <h1>🩺 Smart Symptom Predictor</h1>
+      <HealthChatbot /> */}
+
+      <Routes>
+        <Route path='/' element={<Start />} />
+        
+        <Route path='/home' element={
+          <UserProtectedWrapper>
+            <Home />
+          </UserProtectedWrapper>
+        } />
+        
+        <Route path='/login' element={<UserLogin />} />
+        <Route path='/signup' element={<UserSignup />} />
+        <Route path='/doctor-login' element={<DoctorLogin />} />
+        <Route path='/doctor-signup' element={<DoctorSignup />} />
+        
+        <Route path='/user/logout' element={
+          <UserProtectedWrapper>
+            <UserLogout />
+          </UserProtectedWrapper>
+        } />
+
+        <Route path='/doctor-home' element={
+          <DoctorProtectedWrapper>
+            <DoctorHome />
+          </DoctorProtectedWrapper>
+        } />
+        
+        <Route path='/doctor/logout' element={
+          <DoctorProtectedWrapper>
+            <UserLogout />
+          </DoctorProtectedWrapper>
+        } />
+      </Routes>
+    </div>
+  );
+};
+
+export default App;
