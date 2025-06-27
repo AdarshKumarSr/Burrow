@@ -1,53 +1,44 @@
-import React, {use, useContext, useEffect} from 'react'
-import { CaptainDataContext } from '../context/DoctorContext'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import React, { useContext, useEffect, useState } from 'react';
+import { DoctorDataContext } from '../context/DoctorContext';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
-const CaptainProtectedWrapper = ({
-    children
-}) => {
-    const token = localStorage.getItem('token') 
-    const navigate = useNavigate()
-    const {captain,  setCaptain} = React.useContext(CaptainDataContext);
-    const [  isLoading, setIsLoading ] = React.useState(true);
-     
-    console.log(token);
-    
+const DoctorProtectedWrapper = ({ children }) => {
+  const token = localStorage.getItem('token');
+  const navigate = useNavigate();
+  const { doctor, setDoctor } = useContext(DoctorDataContext);
+  const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(() => {
-        if (!token) {
-            navigate('/captain-login')
-        }
-    }, [token ])
-
-    axios.get(`${import.meta.env.VITE_BASE_URL}/captains/profile`, {
-        headers:{
-            Authorization: `Bearer ${token}`
-        } 
-    }).then((response) => {
-        if (response.status === 200) {
-            console.log('captain profile fetched successfully')
-            setCaptain(response.data.captain)
-            setIsLoading(false)
-        }
-    }).catch((error) => {
-        console.log(error);
-        localStorage.removeItem('token')
-        navigate('/captain-login')
-    })
-
-    if (isLoading) {
-        return(
-            <div>Loading....</div>
-        )
+  useEffect(() => {
+    if (!token) {
+      navigate('/doctor-login');
+      return;
     }
 
+    axios
+      .get(`${import.meta.env.VITE_BASE_URL}/doctors/profile`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      })
+      .then((response) => {
+        if (response.status === 200) {
+          setDoctor(response.data.doctor);
+          setIsLoading(false);
+        }
+      })
+      .catch((error) => {
+        console.error('Profile fetch failed:', error);
+        localStorage.removeItem('token');
+        navigate('/doctor-login');
+      });
+  }, [token, navigate, setDoctor]);
 
-  return (
-    <>
-        {children}
-    </>
-  )
-}
+  if (isLoading) {
+    return <div>Loading...</div>;
+  }
 
-export default CaptainProtectedWrapper
+  return <>{children}</>;
+};
+
+export default DoctorProtectedWrapper;

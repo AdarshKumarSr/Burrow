@@ -1,0 +1,42 @@
+Disease,Doctor Name,Location,Price (INR)
+Drug Reaction,Dr. Aman Kapoor (ENT Specialist),"Jaslok Hospital, Mumbai",509
+Malaria,Dr. Nishant Mehta (Internal Medicine Specialist),"AIIMS, Delhi",622
+Allergy,Dr. Shweta Khurana (Endocrinologist),"Jaslok Hospital, Mumbai",772
+Hypothyroidism,Dr. Kavita Kapoor (Hepatologist),"Max Healthcare, Mumbai",1026
+Psoriasis,Dr. Neha Mehta (General Physician),"Max Healthcare, Mumbai",1184
+GERD,Dr. Aman Kapoor (ENT Specialist),"Manipal Hospital, Chennai",457
+Chronic cholestasis,Dr. Shweta Menon (Pediatrician),"Aster Hospital, Kochi",492
+hepatitis A,Dr. Aman Reddy (Rheumatologist),"Aster Hospital, Kochi",404
+Osteoarthristis,Dr. Ramesh Kapoor (General Physician),"Columbia Asia, Bangalore",319
+(vertigo) Paroymsal  Positional Vertigo,Dr. Ramesh Sharma (Cardiologist),"Jaslok Hospital, Mumbai",734
+Hypoglycemia,Dr. Anjali Mehta (Pediatrician),"Apollo Hospital, Delhi",1060
+Acne,Dr. Kavita Menon (Pulmonologist),"Manipal Hospital, Chennai",838
+Diabetes,Dr. Rohit Mehta (Pediatrician),"Global Hospital, Hyderabad",931
+Impetigo,Dr. Nishant Sharma (Rheumatologist),"Aster Hospital, Kochi",372
+Hypertension,Dr. Aman Rao (Allergist),"Jaslok Hospital, Mumbai",694
+Peptic ulcer diseae,Dr. Aman Menon (Pulmonologist),"Global Hospital, Hyderabad",636
+Dimorphic hemorrhoids(piles),Dr. Arjun Reddy (Internal Medicine Specialist),"Apollo Hospital, Delhi",1121
+Common Cold,Dr. Priya Mehta (Pulmonologist),"Global Hospital, Hyderabad",542
+Chicken pox,Dr. Nishant Mehta (Immunologist),"Global Hospital, Hyderabad",1064
+Cervical spondylosis,Dr. Shweta Nair (Endocrinologist),"Columbia Asia, Bangalore",920
+Hyperthyroidism,Dr. Kavita Mehta (Immunologist),"Jaslok Hospital, Mumbai",853
+Urinary tract infection,Dr. Priya Desai (Rheumatologist),"Apollo Hospital, Delhi",1048
+Varicose veins,Dr. Aman Nair (Hepatologist),"Jaslok Hospital, Mumbai",548
+AIDS,Dr. Nishant Sharma (General Physician),"Global Hospital, Hyderabad",1162
+Paralysis (brain hemorrhage),Dr. Rohit Kapoor (Internal Medicine Specialist),"Medanta, Gurgaon",1106
+Typhoid,Dr. Priya Kapoor (Cardiologist),"Apollo Hospital, Delhi",340
+Hepatitis B,Dr. Arjun Nair (Endocrinologist),"Medanta, Gurgaon",730
+Fungal infection,Dr. Neha Verma (Allergist),"Fortis Hospital, Hyderabad",1059
+Hepatitis C,Dr. Arjun Sharma (Endocrinologist),"Medanta, Gurgaon",1065
+Migraine,Dr. Ramesh Rao (ENT Specialist),"Manipal Hospital, Chennai",446
+Bronchial Asthma,Dr. Arjun Desai (Pulmonologist),"Aster Hospital, Kochi",822
+Alcoholic hepatitis,Dr. Kavita Desai (ENT Specialist),"Columbia Asia, Bangalore",414
+Jaundice,Dr. Aman Desai (ENT Specialist),"Aster Hospital, Kochi",744
+Hepatitis E,Dr. Shweta Mehta (Pediatrician),"Aster Hospital, Kochi",1059
+Dengue,Dr. Aman Khurana (General Physician),"Fortis Hospital, Hyderabad",911
+Hepatitis D,Dr. Priya Kapoor (Immunologist),"Max Healthcare, Mumbai",1017
+Heart attack,Dr. Anjali Verma (General Physician),"AIIMS, Delhi",496
+Pneumonia,Dr. Ramesh Rao (Allergist),"Medanta, Gurgaon",478
+Arthritis,Dr. Priya Sharma (Pulmonologist),"Jaslok Hospital, Mumbai",1048
+Gastroenteritis,Dr. Kavita Rao (Gastroenterologist),"Max Healthcare, Mumbai",1034
+Tuberculosis,Dr. Shweta Rao (Endocrinologist),"Columbia Asia, Bangalore",616
