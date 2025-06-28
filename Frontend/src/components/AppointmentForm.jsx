@@ -30,40 +30,77 @@ const AppointmentForm = ({ doctor }) => {
   };
 
   return (
-    <div style={styles.container}>
-      <h2>📅 Book Appointment with Dr. {doctor.name}</h2>
-      <div style={styles.card}>
-        <p><strong>Specialty:</strong> {doctor.specialty}</p>
-        <p><strong>Location:</strong> {doctor.location}</p>
+    <div className="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-sm border border-cyan-100">
+      <h2 className="text-2xl font-bold mb-4">
+        📅 Book Appointment with Dr. {doctor.name}
+      </h2>
+
+      <div className="bg-gray-100 p-4 rounded-lg mb-6">
+        <p className="text-sm text-gray-700 mb-1">
+          <span className="font-medium">Specialty:</span> {doctor.specialty}
+        </p>
+        <p className="text-sm text-gray-700">
+          <span className="font-medium">Location:</span> {doctor.location}
+        </p>
       </div>
 
-      <form onSubmit={handleSubmit} style={styles.form}>
-        <label style={styles.label}>Appointment Mode:</label>
-        <select value={mode} onChange={(e) => setMode(e.target.value)} style={styles.input}>
-          <option value="online">Online</option>
-          <option value="offline">Offline</option>
-        </select>
+      <form onSubmit={handleSubmit} className="space-y-4">
+        <div>
+          <label className="block text-sm font-semibold mb-1">Appointment Mode</label>
+          <select
+            value={mode}
+            onChange={(e) => setMode(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
+          >
+            <option value="online">Online</option>
+            <option value="offline">Offline</option>
+          </select>
+        </div>
 
-        <label style={styles.label}>Date & Time:</label>
-        <input
-          type="datetime-local"
-          value={datetime}
-          onChange={(e) => setDatetime(e.target.value)}
-          style={styles.input}
-        />
+        <div>
+          <label className="block text-sm font-semibold mb-1">Date & Time</label>
+          <input
+            type="datetime-local"
+            value={datetime}
+            onChange={(e) => setDatetime(e.target.value)}
+            className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
+          />
+        </div>
 
-        <button type="submit" style={styles.button}>✅ Confirm Appointment</button>
+        <button
+          type="submit"
+          className="w-full bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-md text-sm font-semibold transition"
+        >
+          ✅ Confirm Appointment
+        </button>
       </form>
 
       {confirmation && (
-        <div style={styles.confirmation}>
-          <h3>✅ Appointment Confirmed!</h3>
-          <p><strong>Doctor:</strong> {doctor.name}</p>
-          <p><strong>Time:</strong> {new Date(confirmation.time).toLocaleString()}</p>
+        <div className="mt-6 bg-green-100 p-4 rounded-md text-sm text-gray-800">
+          <h3 className="text-lg font-semibold mb-2">✅ Appointment Confirmed!</h3>
+          <p>
+            <span className="font-medium">Doctor:</span> {doctor.name}
+          </p>
+          <p>
+            <span className="font-medium">Time:</span>{" "}
+            {new Date(confirmation.time).toLocaleString()}
+          </p>
           {confirmation.type === "online" ? (
-            <p><strong>GMeet Link:</strong> <a href={confirmation.link} target="_blank" rel="noopener noreferrer">{confirmation.link}</a></p>
+            <p>
+              <span className="font-medium">GMeet Link:</span>{" "}
+              <a
+                href={confirmation.link}
+                className="text-blue-600 underline"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                {confirmation.link}
+              </a>
+            </p>
           ) : (
-            <p><strong>Address:</strong> {confirmation.address}</p>
+            <p>
+              <span className="font-medium">Address:</span> {confirmation.address}
+            </p>
           )}
         </div>
       )}
@@ -71,51 +108,4 @@ const AppointmentForm = ({ doctor }) => {
   );
 };
 
-// 🔽 Add this line to enable importing it elsewhere
 export default AppointmentForm;
-
-// Optional: add your styles object here if not already defined.
-const styles = {
-  container: {
-    backgroundColor: "#fff",
-    padding: "20px",
-    borderRadius: "10px",
-    boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
-    maxWidth: "500px",
-    margin: "0 auto",
-  },
-  card: {
-    marginBottom: "20px",
-    backgroundColor: "#f0f0f0",
-    padding: "10px",
-    borderRadius: "6px",
-  },
-  form: {
-    display: "flex",
-    flexDirection: "column",
-  },
-  label: {
-    marginBottom: "8px",
-    fontWeight: "bold",
-  },
-  input: {
-    marginBottom: "16px",
-    padding: "8px",
-    fontSize: "16px",
-  },
-  button: {
-    padding: "10px 16px",
-    fontSize: "16px",
-    backgroundColor: "#0077ff",
-    color: "#fff",
-    border: "none",
-    borderRadius: "6px",
-    cursor: "pointer",
-  },
-  confirmation: {
-    marginTop: "20px",
-    padding: "16px",
-    backgroundColor: "#e0ffe0",
-    borderRadius: "8px",
-  },
-};

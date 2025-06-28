@@ -16,29 +16,30 @@ const Start = () => {
       </div>
 
       <div className="flex gap-10">
+        {/* Doctor Option */}
         <button
           onClick={() => navigate('/doctor-login')}
           className="bg-white rounded-xl shadow p-6 flex flex-col items-center hover:shadow-lg transition border border-gray-200 w-40"
         >
-          {/* Doctor Icon SVG */}
-          <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="64" height="64" rx="16" fill="#E3F2FD"/>
-            <ellipse cx="32" cy="28" rx="12" ry="12" fill="#B0BEC5"/>
-            <rect x="20" y="40" width="24" height="12" rx="6" fill="#90CAF9"/>
-            <rect x="28" y="44" width="8" height="8" rx="4" fill="#fff"/>
-          </svg>
+          <img
+            src={doctorImg}
+            alt="Doctor"
+            className="w-20 h-20 rounded-full object-cover mb-3"
+          />
+          <span className="font-bold text-[#3eb489]">Doctor</span>
         </button>
+
+        {/* Patient Option */}
         <button
           onClick={() => navigate('/login')}
           className="bg-white rounded-xl shadow p-6 flex flex-col items-center hover:shadow-lg transition border border-gray-200 w-40"
         >
-          {/* User Icon SVG */}
-          <svg width="80" height="80" viewBox="0 0 64 64" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect width="64" height="64" rx="16" fill="#E3F2FD"/>
-            <ellipse cx="32" cy="28" rx="12" ry="12" fill="#90CAF9"/>
-            <rect x="20" y="40" width="24" height="12" rx="6" fill="#B0BEC5"/>
-            <rect x="28" y="44" width="8" height="8" rx="4" fill="#fff"/>
-          </svg>
+          <img
+            src={patientImg}
+            alt="Patient"
+            className="w-20 h-20 rounded-full object-cover mb-3"
+          />
+          <span className="font-bold text-[#3eb489]">Patient</span>
         </button>
       </div>
     </div>
