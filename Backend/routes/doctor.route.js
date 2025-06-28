@@ -4,7 +4,6 @@ const router = express.Router();
 const { body } = require('express-validator');
 const authMiddleware = require('../middlewares/auth.middleware');
 
-// Register Route
 router.post('/register', [
     body('fullname.firstname')
         .isLength({ min: 3 })
@@ -32,7 +31,6 @@ router.post('/register', [
 
 ], doctorController.registerDoctor);
 
-// Login Route
 router.post('/login', [
     body('email')
         .isEmail()
@@ -43,10 +41,10 @@ router.post('/login', [
         .withMessage('Password must be at least 8 characters long')
 ], doctorController.loginDoctor);
 
-// Profile Route
+
 router.get('/profile', authMiddleware.authCaptain, doctorController.getDoctorProfile);
 
-// Logout Route
+
 router.get('/logout', authMiddleware.authCaptain, doctorController.logoutDoctor);
 
 module.exports = router;

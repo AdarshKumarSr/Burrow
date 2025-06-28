@@ -14,7 +14,10 @@ import DoctorProtectedWrapper from './pages/DoctorProtectWrapper';
 import HealthChatbot from './components/HealthChatBot'; // ✅ Make sure path is correct
 import Navbar from './components/Navbar';
 import Chat from './pages/Chat';
+import BuyMedicine from './pages/BuyMedicine';
+import BookTests from "./pages/BookTests";
 import BookAppointment from './pages/BookAppointment';
+import Profile from './pages/Profile';
 
 const App = () => {
   return (
@@ -62,9 +65,22 @@ const App = () => {
           </DoctorProtectedWrapper>
         } />
 
+        <Route path='/buy-medicine' element={
+          <UserProtectedWrapper>
+            <BuyMedicine />
+          </UserProtectedWrapper>
+        } />
+
+        <Route path="/book-tests" element={
+            <UserProtectedWrapper>
+              <BookTests />
+            </UserProtectedWrapper>
+          } />
+
         <Route path='/chat' element={<Chat />} />
         <Route path='/dashboard' element={<div className='p-8'>Dashboard coming soon...</div>} />
         <Route path='/bookappointment' element={<BookAppointment />} />
+        <Route path='/profile' element={<Profile />} />
       </Routes>
     </div>
   );

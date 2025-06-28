@@ -15,7 +15,6 @@ class_names = joblib.load("models/class_names.pkl")
 desc_df = pd.read_csv("data/symptom_Description.csv")
 prec_df = pd.read_csv("data/symptom_precaution.csv")
 
-
 doctor_mapping = {
     "drug reaction": [
         {"name": "Dr. Amit Nanda", "specialty": "Allergist", "location": "Delhi"},

@@ -36,7 +36,7 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
           }
 
         } else {
-          setError("❌ No predictions found.");
+          setError("sorry we are unable to assit you , at the moment.");
         }
       } catch (err) {
         console.error("Fetch error:", err);
