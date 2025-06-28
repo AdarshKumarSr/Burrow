@@ -22,21 +22,17 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
         });
 
         if (!res.ok) throw new Error(`Server error: ${res.status}`);
-
         const data = await res.json();
-        console.log("Backend response:", data);
 
         if (data?.results?.length > 0) {
           setResponse(data);
-
           if (data.top_disease_info?.missing_data) {
             setTimeout(() => {
               triggerNextStep({ trigger: "symptomInput" });
             }, 4000);
           }
-
         } else {
-          setError("sorry we are unable to assit you , at the moment.");
+          setError("Sorry, we’re unable to assist at the moment.");
         }
       } catch (err) {
         console.error("Fetch error:", err);
@@ -49,21 +45,16 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
     fetchPrediction();
   }, [userInput, triggerNextStep]);
 
-  if (loading) return <div>🧠 Analyzing your symptoms...</div>;
+  if (loading) return <div className="text-gray-700 px-4">🧠 Analyzing your symptoms...</div>;
   if (error) return <div style={styles.error}>{error}</div>;
 
   const { results = [], symptoms = [], top_disease_info = {} } = response || {};
   const doctors = top_disease_info.doctors || [];
 
-  const handleBookAppointment = () => {
-    localStorage.setItem("selectedDoctors", JSON.stringify(doctors));
-    window.location.href = "/bookappointment"; // or use navigate() if using react-router-dom
-  };
-
   return (
     <div style={styles.wrapper}>
       <div style={styles.container}>
-        <h3>🧠 Predicted Diseases</h3>
+        <h3 className="text-lg font-semibold mb-3">🧠 Predicted Diseases</h3>
         {results.map((res, i) => (
           <p key={i}>
             {i + 1}. <strong>{res.disease.toLowerCase()}</strong> – {Math.round(res.confidence * 100)}%
@@ -72,28 +63,28 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
 
         {symptoms.length > 0 && (
           <>
-            <h4>📋 Matched Symptoms</h4>
+            <h4 className="mt-4 font-semibold">📋 Matched Symptoms</h4>
             <p>{symptoms.join(", ")}</p>
           </>
         )}
 
         {top_disease_info.missing_data ? (
           <div style={styles.error}>
-            ⚠️ I couldn't find detailed info for this condition. Could you describe your symptoms in a bit more detail?
+            ⚠️ I couldn’t find detailed info. Could you describe your symptoms in more detail?
           </div>
         ) : (
           <>
             {top_disease_info.description && (
               <>
-                <h4>📖 Description</h4>
+                <h4 className="mt-4 font-semibold">📖 Description</h4>
                 <p>{top_disease_info.description}</p>
               </>
             )}
 
             {top_disease_info.precautions?.length > 0 && (
               <>
-                <h4>🛡️ Precautions</h4>
-                <ul>
+                <h4 className="mt-4 font-semibold">🛡️ Precautions</h4>
+                <ul className="list-disc pl-5">
                   {top_disease_info.precautions.map((item, i) => (
                     <li key={i}>{item}</li>
                   ))}
@@ -103,19 +94,21 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
 
             {doctors.length > 0 && (
               <>
-                <h4>👨‍⚕️ Suggested Doctors</h4>
+                <h4 className="mt-4 font-semibold">👨‍⚕️ Suggested Doctors</h4>
                 <ul style={styles.doctorList}>
                   {doctors.map((doc, i) => (
                     <li key={i} style={styles.doctorItem}>
-                      <span>{doc.name}</span>
-                      <button
-                        style={styles.button}
-                        onClick={() =>
-                          setExpandedDoctor(expandedDoctor === i ? null : i)
-                        }
-                      >
-                        {expandedDoctor === i ? "Hide Details" : "View Details"}
-                      </button>
+                      <div className="flex justify-between items-center">
+                        <span className="font-medium">{doc.name}</span>
+                        <button
+                          style={styles.button}
+                          onClick={() =>
+                            setExpandedDoctor(expandedDoctor === i ? null : i)
+                          }
+                        >
+                          {expandedDoctor === i ? "Hide" : "View"} Details
+                        </button>
+                      </div>
                       {expandedDoctor === i && (
                         <div style={styles.doctorDetails}>
                           <p><strong>Specialty:</strong> {doc.specialty}</p>
@@ -127,15 +120,14 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
                 </ul>
 
                 <button
-                  style={{ ...styles.button, marginTop: "10px" }}
+                  style={{ ...styles.button, marginTop: "12px" }}
                   onClick={() => {
                     localStorage.setItem("selectedDoctors", JSON.stringify(doctors));
-                    window.location.href = "/bookappointment"; 
+                    window.location.href = "/bookappointment";
                   }}
                 >
                   📅 Book Appointment
                 </button>
-
               </>
             )}
           </>
@@ -149,25 +141,26 @@ const styles = {
   wrapper: {
     display: "flex",
     justifyContent: "center",
-    alignItems: "center",
-    minHeight: "80vh",
+    padding: "30px 16px",
   },
   container: {
-    background: "#1e1e1e",
-    color: "#eaeaea",
-    padding: "20px",
+    background: "#d2f0e4", // Light mint green
+    color: "#1c1c1c",       // Soft dark text
+    padding: "24px",
     borderRadius: "16px",
-    width: "85%",
+    width: "100%",
     maxWidth: "720px",
-    boxShadow: "0 4px 12px rgba(0,0,0,0.3)",
+    boxShadow: "0 4px 12px rgba(0,0,0,0.1)",
     fontSize: "15px",
     lineHeight: "1.6",
   },
   error: {
-    color: "#ff6b6b",
+    color: "#9b1c1c",
+    backgroundColor: "#ffe0e0",
     padding: "10px",
-    backgroundColor: "#2e2e2e",
     borderRadius: "10px",
+    marginTop: "12px",
+    fontWeight: "500",
   },
   doctorList: {
     listStyle: "none",
@@ -175,21 +168,26 @@ const styles = {
   },
   doctorItem: {
     marginBottom: "12px",
+    padding: "12px",
+    backgroundColor: "#ecfdf5",
+    borderRadius: "10px",
+    border: "1px solid #b6e2d3",
   },
   doctorDetails: {
-    marginTop: "6px",
-    padding: "10px",
-    backgroundColor: "#2a2a2a",
-    borderRadius: "10px",
+    marginTop: "8px",
+    padding: "8px",
+    backgroundColor: "#f9fffc",
+    borderRadius: "8px",
+    fontSize: "14px",
   },
   button: {
-    marginLeft: "10px",
-    padding: "4px 10px",
+    padding: "6px 12px",
+    backgroundColor: "#0077ff",
+    color: "#fff",
     border: "none",
     borderRadius: "6px",
-    backgroundColor: "#0077ff",
-    color: "white",
     cursor: "pointer",
+    fontSize: "14px",
   },
 };
 

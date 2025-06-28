@@ -7,8 +7,8 @@ const theme = {
   background: "#f8fffc",
   fontFamily: "Poppins, sans-serif",
   headerBgColor: "#a8ffeb",
-  headerFontColor: "#1a3c34",
-  headerFontSize: "18px",
+  headerFontColor: "black",
+  headerFontSize: "20px",
   botBubbleColor: "#b9f5d8",
   botFontColor: "#1a3c34",
   userBubbleColor: "#ffffff",
@@ -198,8 +198,8 @@ function ChatBotUI() {
         >
           <div
             style={{
-              width: "600px",
-              height: "520px",
+              width: "800px",
+              height: "600px",
               borderRadius: "16px",
               background: "#ffffff",
               display: "flex",
