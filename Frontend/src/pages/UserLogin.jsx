@@ -1,84 +1,100 @@
-import React, { useState } from 'react'
-import logo from '../assets/burrowlogo.png';
-import { Link } from 'react-router-dom';
+import React, { useState } from 'react';
+import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
 import { UserDataContext } from '../context/UserContext';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios'
 
 const UserLogin = () => {
-
-  const [email, setEmail] = useState('')
-  const [password, setPassword] = useState('')
-  const [userData, setuserData] = useState('')
-
-  const {user , setUser} = React.useContext(UserDataContext)
-  const Navigate = useNavigate()
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const { setUser } = React.useContext(UserDataContext);
+  const navigate = useNavigate();
 
   const submitHandler = async (e) => {
-    e.preventDefault()
-     const userData = {
-      email: email,
-      password: password
-     }
+    e.preventDefault();
 
-
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData)
-    // Handle form submission logic here
-
+    const userData = { email, password };
+    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData);
 
     if (response.status === 200) {
-      const data = response.data
-      setUser(data.user)
-      localStorage.setItem('token', data.token)
-      Navigate('/home')
+      const data = response.data;
+      setUser(data.user);
+      localStorage.setItem('token', data.token);
+      navigate('/home');
     }
 
-    setEmail('')
-    setPassword('')
-  }
+    setEmail('');
+    setPassword('');
+  };
+
   return (
-    <div className='p-7 h-screen flex flex-col justify-between'>
-      <div>
-      
-      <form onSubmit={(e)=>{
-        submitHandler(e)
-      }} >
-      <h3 className='font-bold text-lg mb-2'> What's your Email  </h3>
-      <input 
-      required 
-      value={email}
-      onChange={(e) => {
-        setEmail(e.target.value)
-      }}
-      className='bg-[#eee] mb-7 rounded px-4 py-2   w-full text-lg placeholder:text-base'
-      type='email' placeholder='email@example.com' />
+    <div className="min-h-screen bg-[#f4f8fc] pt-24 flex flex-col items-center px-4">
+      <h2 className="text-3xl font-bold text-center mb-8 border-b-2 border-gray-400 pb-2 w-fit">
+        Login
+      </h2>
 
-      <h3 className='font-bold text-lg mb-2'> Enter Password</h3>
-      <input 
-      required
-      value={password}
-      onChange={(e) => {
-        setPassword(e.target.value)
-      }} 
-       className=' bg-[#eee] mb-7 rounded px-4 py-2   w-full text-lg placeholder:text-base'
-      type='password' placeholder='password' />
+      <form
+        onSubmit={submitHandler}
+        className="bg-white rounded-xl shadow-md px-10 py-8 w-full max-w-2xl"
+      >
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          <input
+            required
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="EMAIL"
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+          />
+          <input
+            required
+            type="password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            placeholder="PASSWORD"
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+          />
+        </div>
 
+        <button
+          type="submit"
+          className="w-full bg-gray-300 hover:bg-gray-400 text-black font-semibold py-2 rounded-md transition mb-4"
+        >
+          LOGIN
+        </button>
 
-      <button className='bg-[#111] text-white font-semibold mb-3 rounded px-4 py-2 border w-full text-lg placeholder:text-base' >Login</button>
+        <p className="text-center text-sm text-gray-600 mb-4">
+          New here?{' '}
+          <Link to="/Signup" className="text-blue-600 hover:underline font-medium">
+            Create New Account
+          </Link>
+        </p>
 
-     <p className='text-center' >New here!!?  
-      <Link to='/Signup' className='text-blue-600'> Create New Account</Link> </p>
+        <div className="flex items-center my-4">
+          <hr className="flex-grow border-gray-300" />
+          <span className="mx-3 text-gray-500 text-sm font-medium">or sign in with</span>
+          <hr className="flex-grow border-gray-300" />
+        </div>
 
+        <div className="flex gap-4 justify-center">
+          <button className="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 hover:bg-gray-100 transition">
+            <img src="https://img.icons8.com/color/20/google-logo.png" alt="Google" />
+            <span className="text-sm font-medium">Google</span>
+          </button>
+          <button className="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 hover:bg-gray-100 transition">
+            <img src="https://img.icons8.com/color/20/facebook-new.png" alt="Facebook" />
+            <span className="text-sm font-medium">Facebook</span>
+          </button>
+        </div>
       </form>
-      </div>
-      <div>
-        <Link 
-        to='/doctor-login'
-           className='bg-[#10b461] flex items-center justify-center text-white font-semibold mb-5 rounded px-4 py-2 border w-full text-lg placeholder:text-base'
-        > SignIn As Doctor</Link>
-      </div>
-    </div>
-  )
-}
 
-export default UserLogin
+      <Link
+        to="/doctor-login"
+        className="mt-6 bg-[#10b461] text-white font-semibold py-2 px-6 rounded-lg hover:bg-[#0e9d54] transition"
+      >
+        Sign In as Doctor
+      </Link>
+    </div>
+  );
+};
+
+export default UserLogin;

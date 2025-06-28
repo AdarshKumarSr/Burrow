@@ -16,6 +16,7 @@ import Navbar from './components/Navbar';
 import Chat from './pages/Chat';
 import BuyMedicine from './pages/BuyMedicine';
 import BookTests from "./pages/BookTests";
+import Dashboard from "./pages/Dashboard";
 import BookAppointment from './pages/BookAppointment';
 import Profile from './pages/Profile';
 
@@ -75,9 +76,14 @@ const App = () => {
             <UserProtectedWrapper>
               <BookTests />
             </UserProtectedWrapper>
-          } />
+          }
+        />
+
+        
 
         <Route path='/chat' element={<Chat />} />
+        <Route path='/dashboard' element={<Dashboard />} />
+        
         <Route path='/dashboard' element={<div className='p-8'>Dashboard coming soon...</div>} />
         <Route path='/bookappointment' element={<BookAppointment />} />
         <Route path='/profile' element={<Profile />} />
