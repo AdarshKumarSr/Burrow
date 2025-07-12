@@ -92,12 +92,6 @@ python app.py
 
 ---
 
-## ✨ Screenshots
-
-![How it Works](./frontend/src/assets/how-it-works.png) *(or link to Render URL image)*
-
----
-
 ## 🌟 Author
 
 **Adarsh Kumar**
