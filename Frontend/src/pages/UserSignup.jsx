@@ -7,8 +7,9 @@ const UserSignup = () => {
   const { user, setUser } = useContext(UserDataContext);
   const navigate = useNavigate();
 
+  const [firstname, setFirstname] = useState('');
+  const [lastname, setLastname] = useState('');
   const [email, setEmail] = useState('');
-  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
 
@@ -22,15 +23,18 @@ const UserSignup = () => {
 
     const newUser = {
       fullname: {
-        firstname: username,
-        lastname: '',
+        firstname: firstname.trim(),
+        lastname: lastname.trim() || ' ', // Ensure backend validation passes
       },
       email,
       password,
     };
 
     try {
-      const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/register`, newUser);
+      const response = await axios.post(
+        `${import.meta.env.VITE_BASE_URL}/users/register`,
+        newUser
+      );
 
       if (response.status === 201) {
         const data = response.data;
@@ -43,8 +47,10 @@ const UserSignup = () => {
       alert('Something went wrong. Please try again.');
     }
 
+    // Clear form
+    setFirstname('');
+    setLastname('');
     setEmail('');
-    setUsername('');
     setPassword('');
     setConfirmPassword('');
   };
@@ -60,40 +66,54 @@ const UserSignup = () => {
         className="bg-white rounded-xl shadow-md px-10 py-8 w-full max-w-2xl"
       >
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+          {/* First Name */}
           <input
             type="text"
-            placeholder="Username"
-            value={username}
+            placeholder="First Name"
+            value={firstname}
             required
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm uppercase"
+            onChange={(e) => setFirstname(e.target.value)}
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
           />
 
+          {/* Last Name */}
           <input
-            type="password"
-            placeholder="Password"
-            value={password}
+            type="text"
+            placeholder="Last Name"
+            value={lastname}
             required
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm uppercase"
+            onChange={(e) => setLastname(e.target.value)}
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
           />
 
+          {/* Email */}
           <input
             type="email"
             placeholder="Email"
             value={email}
             required
             onChange={(e) => setEmail(e.target.value)}
-            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm uppercase"
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
           />
 
+          {/* Password */}
+          <input
+            type="password"
+            placeholder="Password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
+          />
+
+          {/* Confirm Password */}
           <input
             type="password"
             placeholder="Confirm Password"
             value={confirmPassword}
             required
             onChange={(e) => setConfirmPassword(e.target.value)}
-            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm uppercase"
+            className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
           />
         </div>
 
