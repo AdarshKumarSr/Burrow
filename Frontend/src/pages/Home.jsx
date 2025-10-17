@@ -174,12 +174,12 @@ const Home = () => {
   <p className="text-lg mb-8">
     Join thousands of users who trust Burrow for their healthcare needs.
   </p>
-  <a 
-    href="/signup" 
+  <Link
+    to="/signup"
     className="bg-white text-[#1CB3A2] hover:bg-gray-100 font-semibold py-3 px-6 rounded-full transition-all"
   >
     Get Started Today →
-  </a>
+  </Link>
 </section>
 
     </div>

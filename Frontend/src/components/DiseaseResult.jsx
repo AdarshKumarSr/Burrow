@@ -1,4 +1,5 @@
 import React, { useEffect, useState, useRef } from "react";
+import { useNavigate } from "react-router-dom"; // ✅ import useNavigate
 
 const DiseaseResult = ({ steps, triggerNextStep }) => {
   const [response, setResponse] = useState(null);
@@ -6,6 +7,8 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
   const [loading, setLoading] = useState(true);
   const [expandedDoctor, setExpandedDoctor] = useState(null);
   const fetchedRef = useRef(false);
+
+  const navigate = useNavigate(); // ✅ initialize navigate
 
   const userInput = steps?.symptomInput?.value;
 
@@ -119,11 +122,12 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
                   ))}
                 </ul>
 
+                {/* ✅ Updated Button */}
                 <button
                   style={{ ...styles.button, marginTop: "12px" }}
                   onClick={() => {
                     localStorage.setItem("selectedDoctors", JSON.stringify(doctors));
-                    window.location.href = "/bookappointment";
+                    navigate("/bookappointment"); // use React Router instead of window.location.href
                   }}
                 >
                   📅 Book Appointment
@@ -144,8 +148,8 @@ const styles = {
     padding: "30px 16px",
   },
   container: {
-    background: "#d2f0e4", // Light mint green
-    color: "#1c1c1c",       // Soft dark text
+    background: "#d2f0e4",
+    color: "#1c1c1c",
     padding: "24px",
     borderRadius: "16px",
     width: "100%",
