@@ -6,6 +6,7 @@ An AI-powered healthcare assistant that empowers users to:
 * Get real-time suggestions & book appointments with verified doctors
 * Buy medicines & schedule diagnostic tests
 
+check it out : https://burrow-3.onrender.com/
 ---
 
 ## 🎓 About
