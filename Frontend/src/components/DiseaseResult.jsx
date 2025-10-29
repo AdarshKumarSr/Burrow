@@ -18,7 +18,8 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
 
     const fetchPrediction = async () => {
       try {
-        const res = await fetch("https://burrow-1.onrender.com/predict", {
+        const res = await fetch("https://burrow-1.onrender.com/predict", { 
+          //https:localhost:5000 (for local testing)
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ text: userInput }),

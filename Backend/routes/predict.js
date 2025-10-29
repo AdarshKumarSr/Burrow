@@ -8,7 +8,8 @@ router.post('/', async (req, res) => {
   const { text } = req.body;
 
   try {
-    const response = await axios.post('https://burrow-1.onrender.com/predict', {
+    const response = await axios.post('https://burrow-1.onrender.com/predict', { 
+      //https:localhost:5000 (for local testing)
       text,
     });
 
