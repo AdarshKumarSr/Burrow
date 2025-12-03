@@ -18,6 +18,7 @@ BurrowAI is a full-stack health assistant that simulates intelligent healthcare 
 * Schedule doctor consultations
 * View personalized health dashboards
 * Book tests or purchase prescribed medicines
+* Get a Google met link scheduled
 
 ---
 
