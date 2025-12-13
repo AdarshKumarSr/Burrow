@@ -1,5 +1,5 @@
 import React from "react";
-
+import Navbar from '../components/Navbar';
 const prescribedTests = [
   {
     name: "CBC - Complete Blood Count",
@@ -49,6 +49,10 @@ const BookTests = () => {
   const cartTotal = 1250;
 
   return (
+
+    <>
+      <Navbar />
+ 
     <div className="px-8 py-6 pb-32 relative">
       {/* Top Heading */}
       <h1 className="text-3xl font-bold mb-2">Book Lab Tests</h1>
@@ -178,6 +182,8 @@ const BookTests = () => {
         🛡️ Tests conducted by certified labs • Secure & confidential
       </div>
     </div>
+
+       </>
   );
 };
 

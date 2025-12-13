@@ -19,11 +19,12 @@ import BookTests from "./pages/BookTests";
 import Dashboard from "./pages/Dashboard";
 import BookAppointment from './pages/BookAppointment';
 import Profile from './pages/Profile';
+import DoctorAppointments from './pages/DoctorAppointments';
 
 const App = () => {
   return (
     <div className="App">
-      <Navbar />
+      {/* <Navbar /> */}
       {/* <h1>🩺 Smart Symptom Predictor</h1>
       <HealthChatbot /> */}
 
@@ -76,6 +77,14 @@ const App = () => {
             <UserProtectedWrapper>
               <BookTests />
             </UserProtectedWrapper>
+          }
+        />
+        <Route
+          path='/doctor/appointments'
+          element={
+            <DoctorProtectedWrapper>
+              <DoctorAppointments />
+            </DoctorProtectedWrapper>
           }
         />
 

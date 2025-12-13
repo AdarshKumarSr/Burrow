@@ -1,5 +1,6 @@
 import React, { useContext } from 'react';
 import { UserDataContext } from '../context/UserContext';
+import Navbar from '../components/Navbar';
 
 const Dashboard = () => {
   const { user } = useContext(UserDataContext);
@@ -47,6 +48,8 @@ const Dashboard = () => {
   ];
 
   return (
+    <>
+      <Navbar />
     <div className="p-8 bg-[#f5fafd] min-h-screen pt-24">
       <h2 className="text-xl font-semibold mb-6">
         Good Afternoon, {user?.fullname?.firstname || 'User'}
@@ -72,8 +75,8 @@ const Dashboard = () => {
         <div className="flex flex-col gap-4">
           {upcomingAppointments.map((appt, index) => (
             <div
-              key={index}
-              className="border border-cyan-200 rounded-lg p-4 flex justify-between items-center bg-[#fdfdfd]"
+            key={index}
+            className="border border-cyan-200 rounded-lg p-4 flex justify-between items-center bg-[#fdfdfd]"
             >
               <div>
                 <p className="font-semibold text-sm">{appt.doctor}</p>
@@ -95,8 +98,8 @@ const Dashboard = () => {
         <div className="flex flex-col gap-4">
           {pastAppointments.map((appt, index) => (
             <div
-              key={index}
-              className="border border-cyan-200 rounded-lg p-4 flex justify-between items-center bg-[#fdfdfd]"
+            key={index}
+            className="border border-cyan-200 rounded-lg p-4 flex justify-between items-center bg-[#fdfdfd]"
             >
               <div>
                 <p className="font-semibold text-sm">{appt.doctor}</p>
@@ -113,6 +116,7 @@ const Dashboard = () => {
         </div>
       </div>
     </div>
+          </>
   );
 };
 

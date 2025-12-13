@@ -2,9 +2,14 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 import SymptomForm from '../components/HealthChatBot'; // adjust path if needed
 import logo from '../assets/burrow-logo1 1.png';
+import Navbar from '../components/Navbar';
 
 const Home = () => {
   return (
+
+    <>
+    <Navbar />
+    
     <div className="min-h-screen bg-gray-100 flex flex-col items-center justify-center p-6">
       {/* Logo */}
       <div className="mb-8">
@@ -183,6 +188,9 @@ const Home = () => {
 </section>
 
     </div>
+
+
+    </>
   );
 };
 

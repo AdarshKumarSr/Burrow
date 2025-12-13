@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Navbar from '../components/Navbar';
 
 const doctorMedicines = [
   {
@@ -69,6 +70,10 @@ const BuyMedicine = () => {
   );
 
   return (
+
+    <>
+      <Navbar />
+ 
     <div className="px-8 py-6">
       {/* Doctor Prescribed Medicines */}
       <div className="flex gap-6 mb-12">
@@ -169,6 +174,7 @@ const BuyMedicine = () => {
         </div>
       </div>
     </div>
+       </>
   );
 };
 

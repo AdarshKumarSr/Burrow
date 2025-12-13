@@ -75,7 +75,7 @@ const UserLogin = () => {
           <hr className="flex-grow border-gray-300" />
         </div>
 
-        <div className="flex gap-4 justify-center">
+        {/* <div className="flex gap-4 justify-center">
           <button className="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 hover:bg-gray-100 transition">
             <img src="https://img.icons8.com/color/20/google-logo.png" alt="Google" />
             <span className="text-sm font-medium">Google</span>
@@ -84,7 +84,7 @@ const UserLogin = () => {
             <img src="https://img.icons8.com/color/20/facebook-new.png" alt="Facebook" />
             <span className="text-sm font-medium">Facebook</span>
           </button>
-        </div>
+        </div> */}
       </form>
 
       <Link

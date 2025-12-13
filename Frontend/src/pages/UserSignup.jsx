@@ -131,7 +131,7 @@ const UserSignup = () => {
           </Link>
         </p>
 
-        <div className="flex flex-col items-center mt-6 gap-3">
+        {/* <div className="flex flex-col items-center mt-6 gap-3">
           <span className="text-gray-500 text-sm">or sign up with</span>
           <div className="flex gap-4">
             <button className="flex items-center gap-2 bg-white border border-gray-300 rounded-full px-6 py-2 shadow hover:bg-gray-100 transition-all">
@@ -142,8 +142,8 @@ const UserSignup = () => {
               <img src="https://www.svgrepo.com/show/157818/facebook.svg" className="w-5 h-5" />
               <span className="font-medium text-sm">Facebook</span>
             </button>
-          </div>
-        </div>
+          </div> */}
+        {/* </div> */}
       </form>
     </div>
   );
