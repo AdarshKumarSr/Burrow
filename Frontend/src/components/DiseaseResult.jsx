@@ -128,7 +128,7 @@ const DiseaseResult = ({ steps, triggerNextStep }) => {
                   style={{ ...styles.button, marginTop: "12px" }}
                   onClick={() => {
                     localStorage.setItem("selectedDoctors", JSON.stringify(doctors));
-                    navigate("/bookappointment"); // use React Router instead of window.location.href
+                    navigate("/appointment"); // use React Router instead of window.location.href
                   }}
                 >
                   📅 Book Appointment
