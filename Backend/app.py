@@ -14,6 +14,7 @@ class_names = joblib.load("models/class_names.pkl")
 
 desc_df = pd.read_csv("data/symptom_Description.csv")
 prec_df = pd.read_csv("data/symptom_precaution.csv")
+
 doctor_mapping = {
     "drug reaction": [
         {"_id": "c0fbd6c38e5f3a1d2a0b4e91", "name": "Dr. Amit Nanda", "specialty": "Allergist", "location": "Delhi"},
@@ -96,7 +97,6 @@ doctor_mapping = {
         {"_id": "c0fbd6c38e5f3a1d2a0b4eb8", "name": "Dr. Deepak Shetty", "specialty": "Infectious Disease", "location": "Bangalore"}
     ]
 }
-
 
 def extract_symptoms_from_text(text):
     """Extract known symptoms from user text using keyword matching"""

@@ -26,9 +26,9 @@ const BookAppointment = () => {
         <p className="text-gray-600">No doctors found.</p>
       ) : (
         <ul className="space-y-5">
-          {doctors.map((doc, i) => (
+          {doctors.map((doc) => (
             <li
-              key={i}
+              key={doc._id}   // ✅ FIX IS HERE
               className="bg-white p-6 rounded-xl shadow-sm border border-cyan-100"
             >
               <p className="text-lg font-semibold text-gray-800 mb-1">
