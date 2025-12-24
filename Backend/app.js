@@ -9,6 +9,8 @@ const connectToDb = require('./db/db');
 const userRoutes = require('./routes/user.route');
 const doctorRoutes = require('./routes/doctor.route'); 
 const predictRoute = require('./routes/predict');
+const appointmentRoutes = require('./routes/appointment.route');
+
 
 const app = express();
 
@@ -27,5 +29,6 @@ app.get('/', (req, res) => {
 app.use('/users', userRoutes);
 app.use('/doctors', doctorRoutes); 
 app.use('/api/predict', predictRoute);
+app.use('/appointments', appointmentRoutes);
 
 module.exports = app;

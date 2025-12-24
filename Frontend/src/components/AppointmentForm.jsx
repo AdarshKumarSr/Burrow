@@ -1,33 +1,47 @@
 import React, { useState } from "react";
+import axios from "axios";
 
 const AppointmentForm = ({ doctor }) => {
   const [mode, setMode] = useState("online");
   const [datetime, setDatetime] = useState("");
-  const [confirmation, setConfirmation] = useState(null);
+  const [loading, setLoading] = useState(false);
+  const [appointment, setAppointment] = useState(null);
+  const [error, setError] = useState("");
 
-  const generateGMeetLink = () => {
-    const random = () => Math.random().toString(36).substring(2, 6);
-    return `https://meet.google.com/${random()}-${random()}-${random()}`;
-  };
+  const handleSubmit = async (e) => {
+  e.preventDefault();
+  setError("");
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!datetime) return alert("Please select date and time");
+  if (!datetime) {
+    return setError("Please select date and time");
+  }
 
-    if (mode === "online") {
-      setConfirmation({
-        type: "online",
-        link: generateGMeetLink(),
-        time: datetime,
-      });
-    } else {
-      setConfirmation({
-        type: "offline",
-        address: "123 Health St, Wellness City",
-        time: datetime,
-      });
-    }
-  };
+  try {
+    setLoading(true);
+
+    const BASE_URL = import.meta.env.VITE_BASE_URL;
+
+    const res = await axios.post(
+      `${BASE_URL}/appointments`,
+      {
+        doctorId: doctor._id || doctor.id,
+        mode,
+        scheduledAt: datetime,
+      },
+      {
+        withCredentials: true,
+      }
+    );
+
+    setAppointment(res.data.appointment);
+  } catch (err) {
+    setError(
+      err.response?.data?.message || "Failed to book appointment"
+    );
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-sm border border-cyan-100">
@@ -44,62 +58,77 @@ const AppointmentForm = ({ doctor }) => {
         </p>
       </div>
 
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
-          <label className="block text-sm font-semibold mb-1">Appointment Mode</label>
-          <select
-            value={mode}
-            onChange={(e) => setMode(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
+      {!appointment ? (
+        <form onSubmit={handleSubmit} className="space-y-4">
+          <div>
+            <label className="block text-sm font-semibold mb-1">
+              Appointment Mode
+            </label>
+            <select
+              value={mode}
+              onChange={(e) => setMode(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md"
+            >
+              <option value="online">Online</option>
+              <option value="offline">Offline</option>
+            </select>
+          </div>
+
+          <div>
+            <label className="block text-sm font-semibold mb-1">
+              Date & Time
+            </label>
+            <input
+              type="datetime-local"
+              value={datetime}
+              onChange={(e) => setDatetime(e.target.value)}
+              className="w-full px-4 py-2 border rounded-md"
+            />
+          </div>
+
+          {error && (
+            <p className="text-sm text-red-600">{error}</p>
+          )}
+
+          <button
+            type="submit"
+            disabled={loading}
+            className="w-full bg-teal-500 hover:bg-teal-600 text-white py-2 rounded-md"
           >
-            <option value="online">Online</option>
-            <option value="offline">Offline</option>
-          </select>
-        </div>
+            {loading ? "Booking..." : "✅ Request Appointment"}
+          </button>
+        </form>
+      ) : (
+        <div className="mt-4 bg-green-100 p-4 rounded-md">
+          <h3 className="text-lg font-semibold mb-2">
+            ✅ Appointment Requested
+          </h3>
 
-        <div>
-          <label className="block text-sm font-semibold mb-1">Date & Time</label>
-          <input
-            type="datetime-local"
-            value={datetime}
-            onChange={(e) => setDatetime(e.target.value)}
-            className="w-full px-4 py-2 border border-gray-300 rounded-md text-sm focus:outline-none focus:ring-2 focus:ring-teal-400"
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-teal-500 hover:bg-teal-600 text-white py-2 px-6 rounded-md text-sm font-semibold transition"
-        >
-          ✅ Confirm Appointment
-        </button>
-      </form>
-
-      {confirmation && (
-        <div className="mt-6 bg-green-100 p-4 rounded-md text-sm text-gray-800">
-          <h3 className="text-lg font-semibold mb-2">✅ Appointment Confirmed!</h3>
           <p>
-            <span className="font-medium">Doctor:</span> {doctor.name}
+            <b>Status:</b> {appointment.status}
           </p>
           <p>
-            <span className="font-medium">Time:</span>{" "}
-            {new Date(confirmation.time).toLocaleString()}
+            <b>Time:</b>{" "}
+            {new Date(appointment.scheduledAt).toLocaleString()}
           </p>
-          {confirmation.type === "online" ? (
+
+          {appointment.mode === "online" && (
             <p>
-              <span className="font-medium">GMeet Link:</span>{" "}
+              <b>Meeting:</b>{" "}
               <a
-                href={confirmation.link}
-                className="text-blue-600 underline"
+                href={appointment.meetingLink}
                 target="_blank"
-                rel="noopener noreferrer"
+                rel="noreferrer"
+                className="text-blue-600 underline"
               >
-                {confirmation.link}
+                Join Meeting
               </a>
             </p>
-          ) : (
+          )}
+
+          {appointment.mode === "offline" && (
             <p>
-              <span className="font-medium">Address:</span> {confirmation.address}
+              <b>Address:</b> {appointment.address}
             </p>
           )}
         </div>
