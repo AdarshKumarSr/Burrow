@@ -11,18 +11,31 @@ const doctorRoutes = require('./routes/doctor.route');
 const predictRoute = require('./routes/predict');
 const appointmentRoutes = require('./routes/appointment.route');
 
-
 const app = express();
 
 connectToDb();
 
-app.use(cors());
+/**
+ * ✅ CORS FIX (IMPORTANT)
+ * We must allow ONLY the frontend domain
+ * because we are sending cookies (credentials)
+ */
+app.use(
+  cors({
+    origin: [
+      'https://burrow-3.onrender.com', // frontend (prod)
+      'http://localhost:5173',         // frontend (local)
+    ],
+    credentials: true,
+  })
+);
+
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 app.get('/', (req, res) => {
-    res.send('Hello World');
+  res.send('Hello World');
 });
 
 // Routes
