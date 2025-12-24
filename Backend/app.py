@@ -2,12 +2,12 @@ from flask import Flask, request, jsonify
 import pandas as pd
 import joblib
 import re
-import os
 from flask_cors import CORS
 
 app = Flask(__name__)
 CORS(app)
 
+# ===================== LOAD MODELS =====================
 model = joblib.load("models/rf_structured.pkl")
 symptom_list = joblib.load("models/all_symptoms.pkl")
 class_names = joblib.load("models/class_names.pkl")
@@ -15,6 +15,15 @@ class_names = joblib.load("models/class_names.pkl")
 desc_df = pd.read_csv("data/symptom_Description.csv")
 prec_df = pd.read_csv("data/symptom_precaution.csv")
 
+# ===================== HELPERS =====================
+def normalize_disease(name: str) -> str:
+    return (
+        name.lower()
+        .strip()
+        .replace("_", " ")
+    )
+
+# ===================== DOCTOR MAPPING (TEMP / FAKE IDS) =====================
 doctor_mapping = {
     "drug reaction": [
         {"_id": "c0fbd6c38e5f3a1d2a0b4e91", "name": "Dr. Amit Nanda", "specialty": "Allergist", "location": "Delhi"},
@@ -98,17 +107,26 @@ doctor_mapping = {
     ]
 }
 
+# 🔑 Normalize keys ONCE
+doctor_mapping = {
+    normalize_disease(k): v
+    for k, v in doctor_mapping.items()
+}
+
+# ===================== CORE LOGIC =====================
 def extract_symptoms_from_text(text):
-    """Extract known symptoms from user text using keyword matching"""
     text = text.lower()
     return [
         symptom for symptom in symptom_list
-        if re.search(r'\b' + re.escape(symptom.lower()) + r'\b', text)
+        if re.search(r"\b" + re.escape(symptom.lower()) + r"\b", text)
     ]
 
 def predict_disease(symptoms):
-    """Given list of symptoms, return top 3 disease predictions with confidence"""
-    input_df = pd.DataFrame([[1 if s in symptoms else 0 for s in symptom_list]], columns=symptom_list)
+    input_df = pd.DataFrame(
+        [[1 if s in symptoms else 0 for s in symptom_list]],
+        columns=symptom_list
+    )
+
     probabilities = model.predict_proba(input_df)[0]
 
     top_3 = sorted(
@@ -117,71 +135,80 @@ def predict_disease(symptoms):
         reverse=True
     )[:3]
 
-    return [{"disease": name, "confidence": round(prob, 4)} for name, prob in top_3]
+    return [
+        {"disease": name, "confidence": round(prob, 4)}
+        for name, prob in top_3
+    ]
 
 def get_disease_info(disease_name):
-    """Fetch description, precautions, and suggested doctors for a disease"""
-    info = {"description": "", "precautions": [], "doctors": []}
+    info = {
+        "description": "",
+        "precautions": [],
+        "doctors": []
+    }
 
-    desc_row = desc_df[desc_df["Disease"].str.lower() == disease_name.lower()]
+    normalized_name = normalize_disease(disease_name)
+
+    # Description
+    desc_row = desc_df[desc_df["Disease"].str.lower() == normalized_name]
     if not desc_row.empty:
         info["description"] = desc_row.iloc[0]["Description"]
 
-    prec_row = prec_df[prec_df["Disease"].str.lower() == disease_name.lower()]
+    # Precautions
+    prec_row = prec_df[prec_df["Disease"].str.lower() == normalized_name]
     if not prec_row.empty:
         for i in range(1, 5):
-            val = prec_row.iloc[0].get(f"Precaution_{i}", None)
+            val = prec_row.iloc[0].get(f"Precaution_{i}")
             if pd.notna(val):
                 info["precautions"].append(val)
 
-    info["doctors"] = doctor_mapping.get(disease_name.lower(), [])
+    # Doctors (🔥 FIXED)
+    info["doctors"] = doctor_mapping.get(normalized_name, [])
 
-    
     info["missing_data"] = not any([
         info["description"].strip(),
-        len(info["precautions"]) > 0,
-        len(info["doctors"]) > 0
+        info["precautions"],
+        info["doctors"]
     ])
 
     return info
 
-
+# ===================== ROUTES =====================
 @app.route("/predict", methods=["POST"])
 def predict():
     data = request.get_json()
-    input_text = data.get("text", "")
-    symptoms_from_dropdown = data.get("symptoms", [])
+    text = data.get("text", "")
+    symptoms = data.get("symptoms", [])
 
-    if symptoms_from_dropdown:
-        selected = symptoms_from_dropdown
-    elif input_text.strip():
-        selected = extract_symptoms_from_text(input_text)
+    if symptoms:
+        selected = symptoms
+    elif text.strip():
+        selected = extract_symptoms_from_text(text)
     else:
-        return jsonify({"error": "No symptoms or text provided."}), 400
+        return jsonify({"error": "No input provided"}), 400
 
     if not selected:
         return jsonify({
             "results": [],
-            "message": "No known symptoms found in the input."
+            "message": "No known symptoms detected"
         })
 
     results = predict_disease(selected)
     top_disease = results[0]["disease"]
-    top_info = get_disease_info(top_disease)
+    info = get_disease_info(top_disease)
 
     return jsonify({
         "results": results,
         "symptoms": selected,
-        "top_disease_info": top_info
+        "top_disease_info": info
     })
-
 
 @app.route("/symptoms", methods=["GET"])
 def get_symptoms():
-    """Return the full list of symptoms (formatted nicely for dropdowns)"""
-    formatted = [s.replace("_", " ").title() for s in symptom_list]
-    return jsonify({"symptoms": formatted})
+    return jsonify({
+        "symptoms": [s.replace("_", " ").title() for s in symptom_list]
+    })
 
-
+# ===================== RUN =====================
 if __name__ == "__main__":
     app.run(debug=True, port=5000)
