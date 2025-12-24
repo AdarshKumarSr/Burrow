@@ -9,39 +9,45 @@ const AppointmentForm = ({ doctor }) => {
   const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
-  e.preventDefault();
-  setError("");
+    e.preventDefault();
+    setError("");
 
-  if (!datetime) {
-    return setError("Please select date and time");
-  }
+    if (!datetime) {
+      return setError("Please select date and time");
+    }
 
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const BASE_URL = import.meta.env.VITE_BASE_URL;
+      const BASE_URL = import.meta.env.VITE_BASE_URL;
 
-    const res = await axios.post(
-      `${BASE_URL}/appointments`,
-      {
-        doctorId: doctor._id || doctor.id,
-        mode,
-        scheduledAt: datetime,
-      },
-      {
-        withCredentials: true,
-      }
-    );
+      // ✅ GET TOKEN FROM LOGIN
+      const token = localStorage.getItem("token");
 
-    setAppointment(res.data.appointment);
-  } catch (err) {
-    setError(
-      err.response?.data?.message || "Failed to book appointment"
-    );
-  } finally {
-    setLoading(false);
-  }
-};
+      const res = await axios.post(
+        `${BASE_URL}/appointments`,
+        {
+          doctorId: doctor._id || doctor.id,
+          mode,
+          scheduledAt: datetime,
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`, // ✅ THIS FIXES 401
+          },
+          withCredentials: true,
+        }
+      );
+
+      setAppointment(res.data.appointment);
+    } catch (err) {
+      setError(
+        err.response?.data?.message || "Failed to book appointment"
+      );
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="max-w-xl mx-auto bg-white p-6 rounded-xl shadow-sm border border-cyan-100">
