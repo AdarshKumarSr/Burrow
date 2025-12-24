@@ -13,11 +13,15 @@ const {
   authCaptain,
 } = require("../middlewares/auth.middleware");
 
-// User routes
+// =======================
+// USER ROUTES
+// =======================
 router.post("/", authUser, createAppointment);
-router.get("/user", authUser, getUserAppointments);
+router.get("/my", authUser, getUserAppointments);
 
-// Doctor routes
+// =======================
+// DOCTOR ROUTES
+// =======================
 router.get("/doctor", authCaptain, getDoctorAppointments);
 router.patch("/:id/status", authCaptain, updateAppointmentStatus);
 
