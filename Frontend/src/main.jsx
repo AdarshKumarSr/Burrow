@@ -1,25 +1,33 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
-import { BrowserRouter } from 'react-router-dom'
-import UserContext from './context/UserContext.jsx'
-import CaptainContext from './context/DoctorContext.jsx'
-import CartProvider  from './context/CartContext.jsx'
-// import UserProtectedWrapper from './pages/UserProtecedWrapper.jsx'
+import { createRoot } from "react-dom/client";
+import { BrowserRouter } from "react-router-dom";
+import App from "./App.jsx";
+import "./index.css";
 
-createRoot(document.getElementById('root')).render(
-  // <StrictMode>
+import UserContext from "./context/UserContext.jsx";
+import CaptainContext from "./context/DoctorContext.jsx";
+import CartProvider from "./context/CartContext.jsx";
+
+import { Toaster } from "react-hot-toast"; // ✅ ADD THIS
+
+createRoot(document.getElementById("root")).render(
   <CartProvider>
-   <CaptainContext>
-   <UserContext>
-      <BrowserRouter>
-      {/* <UserProtectedWrapper> */}
-        <App />
-      {/* </UserProtectedWrapper> */}
-      </BrowserRouter>
-    </UserContext>
-   </CaptainContext>
-   </CartProvider>
-  // </StrictMode>,
-)
+    <CaptainContext>
+      <UserContext>
+        <BrowserRouter>
+          <App />
+          <Toaster
+            position="top-right"
+            toastOptions={{
+              duration: 2000,
+              style: {
+                background: "#333",
+                color: "#fff",
+                fontSize: "14px",
+              },
+            }}
+          />
+        </BrowserRouter>
+      </UserContext>
+    </CaptainContext>
+  </CartProvider>
+);

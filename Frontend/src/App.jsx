@@ -15,13 +15,14 @@ import HealthChatbot from './components/HealthChatBot'; // ✅ Make sure path is
 import Navbar from './components/Navbar';
 import Chat from './pages/Chat';
 import BuyMedicine from './pages/BuyMedicine';
-import BookTests from "./pages/BookTests";
+// import BookTests from "./pages/BookTests";
 import Dashboard from "./pages/Dashboard";
 import BookAppointment from './pages/BookAppointment';
 // import Profile from './pages/Profile';
 import DoctorAppointments from './pages/DoctorAppointments';
 // import ProtectedRoute from './components/ProtectRoute';
 import ProtectedRoute from './pages/ProtectedRoute';
+import Cart from './pages/Cart';
 
 const App = () => {
   return (
@@ -75,12 +76,12 @@ const App = () => {
           </ProtectedRoute>
         } />
 
-        <Route path="/book-tests" element={
+        {/* <Route path="/book-tests" element={
             <ProtectedRoute>
               <BookTests />
             </ProtectedRoute>
           }
-        />
+        /> */}
         <Route
           path='/doctor/appointments'
           element={
@@ -98,7 +99,7 @@ const App = () => {
             <Dashboard />
           
           } />
-        
+        <Route path='/cart' element={<Cart />} />
         
         <Route path='/appointments' element={<BookAppointment />} />
         {/* <Route path='/profile' element={<Profile />} /> */}

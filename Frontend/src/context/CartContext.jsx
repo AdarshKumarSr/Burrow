@@ -7,6 +7,8 @@ import {
   clearCart,
 } from "../api/cartApi";
 
+import toast from "react-hot-toast"; // ✅ ADD
+
 const CartContext = createContext();
 export const useCart = () => useContext(CartContext);
 
@@ -15,7 +17,6 @@ const CartProvider = ({ children }) => {
   const [total, setTotal] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  // 🔥 Load cart on app start / refresh
   useEffect(() => {
     loadCart();
   }, []);
@@ -32,37 +33,64 @@ const CartProvider = ({ children }) => {
     }
   };
 
+  // ================= ADD TO CART =================
   const addToCart = async (item) => {
     try {
-      const res = await addItemToCart(item);
+      const res = await addItemToCart({
+        name: item.name,
+        price: item.price,
+        quantity: item.quantity || 1,
+        image: item.image,
+        doctor: item.doctor,
+      });
+
       setCart(res.data.items);
+      setTotal(res.data.total);
+
+      toast.success(`${item.name} added to cart 🛒`);
     } catch (err) {
-      console.error("Add to cart failed", err);
+      toast.error("Failed to add item to cart");
+      console.error(err);
     }
   };
 
+  // ================= UPDATE QUANTITY =================
   const updateQuantity = async (name, quantity) => {
     try {
       const res = await updateCartItem(name, quantity);
       setCart(res.data.items);
+      setTotal(res.data.total);
+
+      toast.success("Cart updated");
     } catch (err) {
-      console.error("Update quantity failed", err);
+      toast.error("Failed to update quantity");
     }
   };
 
+  // ================= REMOVE ITEM =================
   const removeFromCart = async (name) => {
     try {
       const res = await removeCartItem(name);
       setCart(res.data.items);
+      setTotal(res.data.total);
+
+      toast("Item removed", { icon: "🗑️" });
     } catch (err) {
-      console.error("Remove item failed", err);
+      toast.error("Failed to remove item");
     }
   };
 
+  // ================= CLEAR CART =================
   const clearUserCart = async () => {
-    await clearCart();
-    setCart([]);
-    setTotal(0);
+    try {
+      await clearCart();
+      setCart([]);
+      setTotal(0);
+
+      toast.success("Cart cleared");
+    } catch (err) {
+      toast.error("Failed to clear cart");
+    }
   };
 
   return (
