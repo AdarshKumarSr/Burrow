@@ -18,8 +18,9 @@ import BuyMedicine from './pages/BuyMedicine';
 import BookTests from "./pages/BookTests";
 import Dashboard from "./pages/Dashboard";
 import BookAppointment from './pages/BookAppointment';
-import Profile from './pages/Profile';
+// import Profile from './pages/Profile';
 import DoctorAppointments from './pages/DoctorAppointments';
+// import ProtectedRoute from './components/ProtectRoute';
 
 const App = () => {
   return (
@@ -91,11 +92,15 @@ const App = () => {
         
 
         <Route path='/chat' element={<Chat />} />
-        <Route path='/dashboard' element={<Dashboard />} />
+        <Route path='/dashboard' element={
+          
+            <Dashboard />
+          
+          } />
         
-        <Route path='/dashboard' element={<div className='p-8'>Dashboard coming soon...</div>} />
+        
         <Route path='/appointments' element={<BookAppointment />} />
-        <Route path='/profile' element={<Profile />} />
+        {/* <Route path='/profile' element={<Profile />} /> */}
       </Routes>
     </div>
   );

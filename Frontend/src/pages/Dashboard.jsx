@@ -6,9 +6,11 @@ import AppointmentSection from "../components/AppointmentSection";
 
 const Dashboard = () => {
   const { user } = useContext(UserDataContext);
+  console.log("DASHBOARD USER:", user);
 
   const [appointments, setAppointments] = useState([]);
   const [loading, setLoading] = useState(true);
+  
 
   useEffect(() => {
     const fetchAppointments = async () => {
@@ -49,11 +51,14 @@ const Dashboard = () => {
       <Navbar />
 
       <div className="p-8 bg-[#f5fafd] min-h-screen pt-24">
-        <h2 className="text-xl font-semibold mb-6">
-          {/* console.log({userSchema?.fullname?.firstname}); */}
-          
-          Good Afternoon, {user?.fullname?.firstname || "User"}
-        </h2>
+       <h2 className="text-xl font-semibold mb-6">
+  {user ? (
+    <>Good Afternoon, {user.fullname.firstname}</>
+  ) : (
+    <span className="inline-block w-40 h-5 bg-gray-200 rounded animate-pulse" />
+  )}
+</h2>
+
 
         {/* Stats */}
         <div className="flex flex-wrap gap-4 mb-10">
