@@ -10,6 +10,10 @@ const userRoutes = require('./routes/user.route');
 const doctorRoutes = require('./routes/doctor.route'); 
 const predictRoute = require('./routes/predict');
 const appointmentRoutes = require('./routes/appointment.route');
+const cartRoutes = require("./routes/cart.route");
+
+
+
 
 const app = express();
 
@@ -19,7 +23,7 @@ connectToDb();
  * ✅ CORS FIX (IMPORTANT)
  * We must allow ONLY the frontend domain
  * because we are sending cookies (credentials)
- */
+*/
 app.use(
   cors({
     origin: [
@@ -43,5 +47,8 @@ app.use('/users', userRoutes);
 app.use('/doctors', doctorRoutes); 
 app.use('/api/predict', predictRoute);
 app.use('/appointments', appointmentRoutes);
+app.use("/cart", cartRoutes);
+app.use("/medicines", require("./routes/medicine.route"));
+
 
 module.exports = app;

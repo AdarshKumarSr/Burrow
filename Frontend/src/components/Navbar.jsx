@@ -1,5 +1,8 @@
 import React from "react";
 import { NavLink } from "react-router-dom";
+import logo from "../assets/burrow-logo1 1.png";
+import { Link } from "react-router-dom";
+
 
 const Navbar = () => {
   const linkClass =
@@ -9,13 +12,20 @@ const Navbar = () => {
     <nav className="fixed top-0 left-0 w-full h-16 bg-white border-b border-gray-200 z-50">
       <div className="max-w-7xl mx-auto px-8 h-full flex items-center justify-between">
         
-        {/* Logo */}
-        <div
-          style={{ fontFamily: '"Baloo 2", cursive' }}
-          className="text-2xl font-bold text-gray-900"
-        >
-          Burrow
-        </div>
+       {/* Logo */}
+<Link to="/home" className="flex items-center gap-3">
+  <img
+    src={logo}
+    alt="Burrow Logo"
+    className="w-9 h-9 object-contain"
+  />
+  <span
+    style={{ fontFamily: '"Baloo 2", cursive' }}
+    className="text-2xl font-bold text-gray-900"
+  >
+    Burrow
+  </span>
+</Link>
 
         {/* Center links */}
         <div className="hidden md:flex gap-12">
