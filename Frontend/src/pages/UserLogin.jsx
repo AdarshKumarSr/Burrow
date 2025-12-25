@@ -1,29 +1,36 @@
-import React, { useState } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import axios from 'axios';
-import { UserDataContext } from '../context/UserContext';
+import React, { useState, useContext } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import api from "../api/axios";
+import { UserDataContext } from "../context/UserContext";
 
 const UserLogin = () => {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const { setUser } = React.useContext(UserDataContext);
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+
+  const { setUser, setToken } = useContext(UserDataContext);
   const navigate = useNavigate();
 
   const submitHandler = async (e) => {
     e.preventDefault();
 
-    const userData = { email, password };
-    const response = await axios.post(`${import.meta.env.VITE_BASE_URL}/users/login`, userData);
+    try {
+      const response = await api.post("/users/login", {
+        email,
+        password,
+      });
 
-    if (response.status === 200) {
-      const data = response.data;
-      setUser(data.user);
-      localStorage.setItem('token', data.token);
-      navigate('/home');
+      const { token, user } = response.data;
+
+      // ✅ ONLY notify context
+      setToken(token);
+      setUser(user);
+
+      // ✅ go directly to dashboard
+      navigate("/home", { replace: true });
+    } catch (err) {
+      console.error("Login failed", err);
+      alert("Invalid email or password");
     }
-
-    setEmail('');
-    setPassword('');
   };
 
   return (
@@ -45,6 +52,7 @@ const UserLogin = () => {
             placeholder="EMAIL"
             className="w-full px-4 py-2 border border-cyan-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-400 text-sm"
           />
+
           <input
             required
             type="password"
@@ -63,28 +71,11 @@ const UserLogin = () => {
         </button>
 
         <p className="text-center text-sm text-gray-600 mb-4">
-          New here?{' '}
-          <Link to="/Signup" className="text-blue-600 hover:underline font-medium">
+          New here?{" "}
+          <Link to="/signup" className="text-blue-600 hover:underline font-medium">
             Create New Account
           </Link>
         </p>
-
-        <div className="flex items-center my-4">
-          <hr className="flex-grow border-gray-300" />
-          <span className="mx-3 text-gray-500 text-sm font-medium">or sign in with</span>
-          <hr className="flex-grow border-gray-300" />
-        </div>
-
-        {/* <div className="flex gap-4 justify-center">
-          <button className="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 hover:bg-gray-100 transition">
-            <img src="https://img.icons8.com/color/20/google-logo.png" alt="Google" />
-            <span className="text-sm font-medium">Google</span>
-          </button>
-          <button className="flex items-center gap-2 border border-gray-300 rounded-full px-4 py-2 hover:bg-gray-100 transition">
-            <img src="https://img.icons8.com/color/20/facebook-new.png" alt="Facebook" />
-            <span className="text-sm font-medium">Facebook</span>
-          </button>
-        </div> */}
       </form>
 
       <Link

@@ -51,13 +51,15 @@ const Dashboard = () => {
       <Navbar />
 
       <div className="p-8 bg-[#f5fafd] min-h-screen pt-24">
-       <h2 className="text-xl font-semibold mb-6">
-  {user ? (
+    <h2 className="text-xl font-semibold mb-6">
+  {user?.fullname?.firstname ? (
     <>Good Afternoon, {user.fullname.firstname}</>
   ) : (
     <span className="inline-block w-40 h-5 bg-gray-200 rounded animate-pulse" />
   )}
 </h2>
+
+
 
 
         {/* Stats */}

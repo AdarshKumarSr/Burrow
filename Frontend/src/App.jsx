@@ -7,7 +7,7 @@ import UserSignup from './pages/UserSignup';
 import UserLogout from './pages/UserLogout';
 import DoctorLogin from './pages/Doctorlogin';
 import DoctorSignup from './pages/DoctorSignup';
-import UserProtectedWrapper from './pages/UserProtecedWrapper';
+// import ProtectedRoute from './pages/UserProtecedWrapper';
 import DoctorHome from './pages/DoctorHome';
 import Chatbot from './pages/Chatbot';
 import DoctorProtectedWrapper from './pages/DoctorProtectWrapper';
@@ -21,6 +21,7 @@ import BookAppointment from './pages/BookAppointment';
 // import Profile from './pages/Profile';
 import DoctorAppointments from './pages/DoctorAppointments';
 // import ProtectedRoute from './components/ProtectRoute';
+import ProtectedRoute from './pages/ProtectedRoute';
 
 const App = () => {
   return (
@@ -33,9 +34,9 @@ const App = () => {
         <Route path='/' element={<Start />} />
         
         <Route path='/home' element={
-          <UserProtectedWrapper>
+          <ProtectedRoute>
             <Home />
-          </UserProtectedWrapper>
+          </ProtectedRoute>
         } />
         
         <Route path='/login' element={<UserLogin />} />
@@ -44,9 +45,9 @@ const App = () => {
         <Route path='/doctor-signup' element={<DoctorSignup />} />
         
         <Route path='/user/logout' element={
-          <UserProtectedWrapper>
+          <ProtectedRoute>
             <UserLogout />
-          </UserProtectedWrapper>
+          </ProtectedRoute>
         } />
 
         <Route path='/doctor-home' element={
@@ -56,9 +57,9 @@ const App = () => {
         } />
         
         <Route path='/chatbot' element={
-          <UserProtectedWrapper>
+          <ProtectedRoute>
             <Chatbot />
-          </UserProtectedWrapper>
+          </ProtectedRoute>
         } />
 
 
@@ -69,15 +70,15 @@ const App = () => {
         } />
 
         <Route path='/buy-medicine' element={
-          <UserProtectedWrapper>
+          <ProtectedRoute>
             <BuyMedicine />
-          </UserProtectedWrapper>
+          </ProtectedRoute>
         } />
 
         <Route path="/book-tests" element={
-            <UserProtectedWrapper>
+            <ProtectedRoute>
               <BookTests />
-            </UserProtectedWrapper>
+            </ProtectedRoute>
           }
         />
         <Route

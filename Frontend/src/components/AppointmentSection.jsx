@@ -14,7 +14,7 @@ const AppointmentSection = ({ title, data, actionLabel }) => {
             >
               <div>
                 <p className="font-semibold text-sm">
-                  Dr. {appt.doctor?.fullname || "Doctor"}
+                  Dr. {appt.doctor?.firstname || "Doctor"}
                 </p>
                 <p className="text-xs text-gray-600">
                   {appt.doctor?.speciality}
