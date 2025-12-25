@@ -50,6 +50,8 @@ const Dashboard = () => {
 
       <div className="p-8 bg-[#f5fafd] min-h-screen pt-24">
         <h2 className="text-xl font-semibold mb-6">
+          {/* console.log({userSchema?.fullname?.firstname}); */}
+          
           Good Afternoon, {user?.fullname?.firstname || "User"}
         </h2>
 

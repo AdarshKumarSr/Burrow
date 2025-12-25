@@ -1,41 +1,31 @@
-// import React, { useState } from 'react'
-import React, { createContext , useState} from 'react'
-export const UserDataContext = createContext()
+import { createContext, useState } from "react";
 
-const UserContext = ({children}) => {
+export const UserDataContext = createContext(null);
+
+const UserContext = ({ children }) => {
   const [user, setUser] = useState(null);
-      const [isLoading, setIsLoading] = useState(false);
-      const [error, setError] = useState(null);
-  
-      const updateUser = (captainData) => {
-          setUser(captainData);
-      }
-  
-      const value = {
-          user,
-          setUser,
-          isLoading,
-          setIsLoading,
-          error,
-          setError,
-          updateUser
-      };
-  
-  //  const [user, setUser] = useState({
-  //   email:'',
-  //   fullname:{
-  //       firstname:'',
-  //       lastname:''
-  //   }
-  //  })
-  return (
-    
-      <div>
-        <UserDataContext.Provider value={value}>
-          {children}
-        </UserDataContext.Provider>
-        </div>
-  )
-}
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
 
-export default UserContext
+  const updateUser = (userData) => {
+    setUser(userData);
+  };
+
+  return (
+    <UserDataContext.Provider
+      value={{
+        user,
+        setUser,
+        isLoading,
+        setIsLoading,
+        error,
+        setError,
+        updateUser,
+      }}
+    >
+      {children}
+    </UserDataContext.Provider>
+  );
+};
+
+export default UserContext;
